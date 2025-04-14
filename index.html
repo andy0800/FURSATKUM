@@ -19,7 +19,7 @@
     h1, h2 {
       margin: 20px 0;
     }
-    /* Homepage - Section Items Container */
+    /* Homepage – Section Items Container */
     .section-item {
       display: inline-block;
       margin: 20px;
@@ -45,7 +45,7 @@
       transform: scale(1.1);
       box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
     }
-    /* Hide sections by default */
+    /* Hide pages by default */
     .section {
       display: none;
       padding: 30px;
@@ -58,7 +58,7 @@
       color: #2196F3;
       text-decoration: underline;
     }
-    /* Candidate/Card style */
+    /* Candidate Card Style */
     .item-card {
       background: #fff;
       margin: 15px auto;
@@ -69,9 +69,15 @@
       display: inline-block;
       text-align: left;
     }
+    /* Updated image style: fixed square size with border */
     .item-image {
-      width: 100%;
+      width: 200px;
+      height: 200px;
+      object-fit: cover;
+      border: 2px solid #ccc;
       border-radius: 8px;
+      display: block;
+      margin: 0 auto;
     }
     .status {
       margin-top: 10px;
@@ -98,12 +104,12 @@
     }
     @keyframes fadeIn {
       from { opacity: 0; }
-      to   { opacity: 1; }
+      to { opacity: 1; }
     }
   </style>
 </head>
 <body>
-  <!-- Homepage: Five Section Items -->
+  <!-- Homepage: Five Sections -->
   <div id="home">
     <h1>Welcome to Our Candidate Reservation Site</h1>
     <!-- Section 1: Sri Lanka -->
@@ -126,9 +132,8 @@
       <div class="section-circle" style="background-image: url('https://flagcdn.com/w320/za.png');"></div>
       <div class="section-label">Africa</div>
     </div>
-    <!-- Section 5:Philippines (Empty) -->
+    <!-- Section 5: Philippines (Empty) -->
     <div class="section-item" onclick="openSection('section5')">
-      <!-- Using the Philippines flag for Philippines section -->
       <div class="section-circle" style="background-image: url('https://flagcdn.com/w320/ph.png');"></div>
       <div class="section-label">Philippines</div>
     </div>
@@ -139,8 +144,7 @@
     <div class="back-button" onclick="goHome()">← Back</div>
     <h2>Sri Lanka Candidates</h2>
     <div class="item-card" id="section1-item1-card">
-      <!-- Using your hosted Imgur link for candidate image -->
-      <img src="https://imgur.com/SHfuTe6" alt="Candidate Sri Lanka" class="item-image">
+      <img src="https://i.imgur.com/SHfuTe6.jpg" alt="Candidate Sri Lanka" class="item-image">
       <p id="section1-item1-status" class="status" style="color: green;">[Available]</p>
       <p>
         <strong>Candidate 1</strong><br>
@@ -160,7 +164,7 @@
     
     <!-- Candidate 1 -->
     <div class="item-card" id="section2-item1-card">
-      <img src="https://imgur.com/lqsMEmG" alt="Candidate Nepal 1" class="item-image">
+      <img src="https://i.imgur.com/lqsMEmG.jpg" alt="Candidate Nepal 1" class="item-image">
       <p id="section2-item1-status" class="status" style="color: green;">[Available]</p>
       <p>
         <strong>Candidate 1</strong><br>
@@ -174,7 +178,7 @@
     
     <!-- Candidate 2 -->
     <div class="item-card" id="section2-item2-card">
-      <img src="https://imgur.com/6POnjb7" alt="Candidate Nepal 2" class="item-image">
+      <img src="https://i.imgur.com/6POnjb7.jpg" alt="Candidate Nepal 2" class="item-image">
       <p id="section2-item2-status" class="status" style="color: green;">[Available]</p>
       <p>
         <strong>Candidate 2</strong><br>
@@ -188,7 +192,7 @@
     
     <!-- Candidate 3 -->
     <div class="item-card" id="section2-item3-card">
-      <img src="https://imgur.com/YN5PNec" alt="Candidate Nepal 3" class="item-image">
+      <img src="https://i.imgur.com/YN5PNec.jpg" alt="Candidate Nepal 3" class="item-image">
       <p id="section2-item3-status" class="status" style="color: green;">[Available]</p>
       <p>
         <strong>Candidate 3</strong><br>
@@ -202,7 +206,7 @@
     
     <!-- Candidate 4 -->
     <div class="item-card" id="section2-item4-card">
-      <img src="https://imgur.com/3MZgKOn" alt="Candidate Nepal 4" class="item-image">
+      <img src="https://i.imgur.com/3MZgKOn.jpg" alt="Candidate Nepal 4" class="item-image">
       <p id="section2-item4-status" class="status" style="color: green;">[Available]</p>
       <p>
         <strong>Candidate 4</strong><br>
@@ -216,7 +220,7 @@
     
     <!-- Candidate 5 -->
     <div class="item-card" id="section2-item5-card">
-      <img src="https://imgur.com/RGVDWyv" alt="Candidate Nepal 5" class="item-image">
+      <img src="https://i.imgur.com/RGVDWyv.jpg" alt="Candidate Nepal 5" class="item-image">
       <p id="section2-item5-status" class="status" style="color: green;">[Available]</p>
       <p>
         <strong>Candidate 5</strong><br>
@@ -236,7 +240,7 @@
     
     <!-- Candidate 1 -->
     <div class="item-card" id="section3-item1-card">
-      <img src="https://imgur.com/pJdIWbP" alt="Candidate India 1" class="item-image">
+      <img src="https://i.imgur.com/pJdIWbP.jpg" alt="Candidate India 1" class="item-image">
       <p id="section3-item1-status" class="status" style="color: green;">[Available]</p>
       <p>
         <strong>Candidate 1</strong><br>
@@ -250,7 +254,7 @@
     
     <!-- Candidate 2 -->
     <div class="item-card" id="section3-item2-card">
-      <img src="https://imgur.com/e8ydY62" alt="Candidate India 2" class="item-image">
+      <img src="https://i.imgur.com/e8ydY62.jpg" alt="Candidate India 2" class="item-image">
       <p id="section3-item2-status" class="status" style="color: green;">[Available]</p>
       <p>
         <strong>Candidate 2</strong><br>
@@ -279,12 +283,11 @@
 
   <!-- Firebase Initialization & App Logic Using Module-Based CDN -->
   <script type="module">
-    // Import needed functions from Firebase SDK
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-app.js";
     import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-analytics.js";
     import { getFirestore, doc, setDoc, getDocs, collection } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-firestore.js";
     
-    // Your Firebase configuration (replace these with your actual config values)
+    // Replace these with your actual Firebase configuration values
     const firebaseConfig = {
       apiKey: "AIzaSyBa2i6Dv-Wi5KAUe91DeNL5U9L--HZkni0",
       authDomain: "fursatkum-792e8.firebaseapp.com",
@@ -295,12 +298,10 @@
       measurementId: "G-FLSGFE2QYV"
     };
 
-    // Initialize Firebase and Analytics
     const app = initializeApp(firebaseConfig);
     const analytics = getAnalytics(app);
     const db = getFirestore(app);
 
-    // Navigation functions
     window.openSection = function(sectionId) {
       document.getElementById('home').style.display = 'none';
       const sections = document.getElementsByClassName('section');
@@ -318,13 +319,11 @@
       document.getElementById('home').style.display = 'block';
     };
 
-    // Reservation function – writes to Firestore and updates UI
     window.reserveItem = async function(itemId) {
       const button = document.getElementById(itemId + '-button');
       if (button.disabled) return;
       console.log("reserveItem called for:", itemId);
       try {
-        // Write to Firestore (the "reservations" collection is created automatically if needed)
         await setDoc(doc(db, "reservations", itemId), { reserved: true });
         console.log("Item reserved successfully for:", itemId);
         const statusEl = document.getElementById(itemId + '-status');
@@ -336,7 +335,6 @@
       }
     };
 
-    // On page load, update reserved items from Firestore
     async function updateReservations() {
       try {
         const querySnapshot = await getDocs(collection(db, "reservations"));
