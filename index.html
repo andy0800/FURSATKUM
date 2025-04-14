@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Reservation Home</title>
+  <title>Candidate Reservation</title>
   <!-- Google Font for a modern look -->
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet" />
   <style>
@@ -19,7 +19,7 @@
     h1, h2 {
       margin: 20px 0;
     }
-    /* Homepage - Country Section Items Container */
+    /* Homepage - Section Items Container */
     .section-item {
       display: inline-block;
       margin: 20px;
@@ -58,14 +58,14 @@
       color: #2196F3;
       text-decoration: underline;
     }
-    /* Item card style */
+    /* Candidate/Card style */
     .item-card {
       background: #fff;
       margin: 15px auto;
       padding: 15px;
-      width: 220px;
+      width: 260px;
       border-radius: 8px;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
       display: inline-block;
       text-align: left;
     }
@@ -79,7 +79,7 @@
     }
     .reserve-button {
       margin-top: 10px;
-      padding: 10px 15px;
+      padding: 10px;
       background: #4CAF50;
       color: #fff;
       border: none;
@@ -103,46 +103,45 @@
   </style>
 </head>
 <body>
-  <!-- Homepage: Five Country Sections -->
+  <!-- Homepage: Five Section Items -->
   <div id="home">
-    <h1>Welcome to Our Reservation Site</h1>
-    <!-- Sri Lanka Section -->
+    <h1>Welcome to Our Candidate Reservation Site</h1>
+    <!-- Section 1: Sri Lanka -->
     <div class="section-item" onclick="openSection('section1')">
       <div class="section-circle" style="background-image: url('https://flagcdn.com/w320/lk.png');"></div>
       <div class="section-label">Sri Lanka</div>
     </div>
-    <!-- Philippines Section (unchanged) -->
+    <!-- Section 2: Nepal -->
     <div class="section-item" onclick="openSection('section2')">
-      <div class="section-circle" style="background-image: url('https://flagcdn.com/w320/ph.png');"></div>
-      <div class="section-label">Philippines</div>
-    </div>
-    <!-- African Section (unchanged; using South Africa's flag as an example) -->
-    <div class="section-item" onclick="openSection('section3')">
-      <div class="section-circle" style="background-image: url('https://flagcdn.com/w320/za.png');"></div>
-      <div class="section-label">African</div>
-    </div>
-    <!-- Indian Section (unchanged) -->
-    <div class="section-item" onclick="openSection('section4')">
-      <div class="section-circle" style="background-image: url('https://flagcdn.com/w320/in.png');"></div>
-      <div class="section-label">Indian</div>
-    </div>
-    <!-- Nepal Section -->
-    <div class="section-item" onclick="openSection('section5')">
       <div class="section-circle" style="background-image: url('https://flagcdn.com/w320/np.png');"></div>
       <div class="section-label">Nepal</div>
     </div>
+    <!-- Section 3: India -->
+    <div class="section-item" onclick="openSection('section3')">
+      <div class="section-circle" style="background-image: url('https://flagcdn.com/w320/in.png');"></div>
+      <div class="section-label">India</div>
+    </div>
+    <!-- Section 4: Africa (Empty) -->
+    <div class="section-item" onclick="openSection('section4')">
+      <div class="section-circle" style="background-image: url('https://flagcdn.com/w320/za.png');"></div>
+      <div class="section-label">Africa</div>
+    </div>
+    <!-- Section 5:Philippines (Empty) -->
+    <div class="section-item" onclick="openSection('section5')">
+      <!-- Using the Philippines flag for Philippines section -->
+      <div class="section-circle" style="background-image: url('https://flagcdn.com/w320/ph.png');"></div>
+      <div class="section-label">Philippines</div>
+    </div>
   </div>
 
-  <!-- Section 1: Sri Lanka Items (Candidate Details) -->
+  <!-- Section 1: Sri Lanka Candidates -->
   <div id="section1" class="section">
     <div class="back-button" onclick="goHome()">← Back</div>
     <h2>Sri Lanka Candidates</h2>
     <div class="item-card" id="section1-item1-card">
-      <!-- Placeholder candidate image; replace with the real picture if available -->
-      <img src="https://via.placeholder.com/200?text=Candidate+SL" alt="Candidate Sri Lanka" class="item-image">
-      <!-- Status text starts as Available (green) -->
+      <!-- Using your hosted Imgur link for candidate image -->
+      <img src="https://imgur.com/SHfuTe6" alt="Candidate Sri Lanka" class="item-image">
       <p id="section1-item1-status" class="status" style="color: green;">[Available]</p>
-      <!-- Candidate details -->
       <p>
         <strong>Candidate 1</strong><br>
         29 years old<br>
@@ -154,87 +153,15 @@
     </div>
   </div>
 
-  <!-- Section 2: Philippines Items (6 Items) -->
+  <!-- Section 2: Nepal Candidates -->
   <div id="section2" class="section">
     <div class="back-button" onclick="goHome()">← Back</div>
-    <h2>Philippines Items</h2>
-    <!-- Item 1: TIGUAN -->
-    <div class="item-card" id="section2-item1-card">
-      <img src="https://via.placeholder.com/200x150?text=TIGUAN" alt="TIGUAN" class="item-image">
-      <p id="section2-item1-status" class="status" style="color: green;">[Available]</p>
-      <button id="section2-item1-button" class="reserve-button" onclick="reserveItem('section2-item1')">Reserve</button>
-    </div>
-    <!-- Item 2: IPHONE 16E -->
-    <div class="item-card" id="section2-item2-card">
-      <img src="https://via.placeholder.com/200x150?text=IPHONE+16E" alt="IPHONE 16E" class="item-image">
-      <p id="section2-item2-status" class="status" style="color: green;">[Available]</p>
-      <button id="section2-item2-button" class="reserve-button" onclick="reserveItem('section2-item2')">Reserve</button>
-    </div>
-    <!-- Item 3: JET SKI -->
-    <div class="item-card" id="section2-item3-card">
-      <img src="https://via.placeholder.com/200x150?text=JET+SKI" alt="JET SKI" class="item-image">
-      <p id="section2-item3-status" class="status" style="color: green;">[Available]</p>
-      <button id="section2-item3-button" class="reserve-button" onclick="reserveItem('section2-item3')">Reserve</button>
-    </div>
-    <!-- Item 4: PC -->
-    <div class="item-card" id="section2-item4-card">
-      <img src="https://via.placeholder.com/200x150?text=PC" alt="PC" class="item-image">
-      <p id="section2-item4-status" class="status" style="color: green;">[Available]</p>
-      <button id="section2-item4-button" class="reserve-button" onclick="reserveItem('section2-item4')">Reserve</button>
-    </div>
-    <!-- Item 5: HONOR -->
-    <div class="item-card" id="section2-item5-card">
-      <img src="https://via.placeholder.com/200x150?text=HONOR" alt="HONOR" class="item-image">
-      <p id="section2-item5-status" class="status" style="color: green;">[Available]</p>
-      <button id="section2-item5-button" class="reserve-button" onclick="reserveItem('section2-item5')">Reserve</button>
-    </div>
-    <!-- Item 6: ACADEA -->
-    <div class="item-card" id="section2-item6-card">
-      <img src="https://via.placeholder.com/200x150?text=ACADEA" alt="ACADEA" class="item-image">
-      <p id="section2-item6-status" class="status" style="color: green;">[Available]</p>
-      <button id="section2-item6-button" class="reserve-button" onclick="reserveItem('section2-item6')">Reserve</button>
-    </div>
-  </div>
-
-  <!-- Section 3: African Items (unchanged) -->
-  <div id="section3" class="section">
-    <div class="back-button" onclick="goHome()">← Back</div>
-    <h2>African Items</h2>
-    <div class="item-card" id="section3-item1-card">
-      <img src="https://placekitten.com/200/150" alt="Item 1" class="item-image">
-      <p id="section3-item1-status" class="status" style="color: green;">[Available]</p>
-      <button id="section3-item1-button" class="reserve-button" onclick="reserveItem('section3-item1')">Reserve</button>
-    </div>
-    <div class="item-card" id="section3-item2-card">
-      <img src="https://placekitten.com/201/150" alt="Item 2" class="item-image">
-      <p id="section3-item2-status" class="status" style="color: green;">[Available]</p>
-      <button id="section3-item2-button" class="reserve-button" onclick="reserveItem('section3-item2')">Reserve</button>
-    </div>
-  </div>
-
-  <!-- Section 4: Indian Items (unchanged) -->
-  <div id="section4" class="section">
-    <div class="back-button" onclick="goHome()">← Back</div>
-    <h2>Indian Items</h2>
-    <div class="item-card" id="section4-item1-card">
-      <img src="https://placekitten.com/200/150" alt="Item 1" class="item-image">
-      <p id="section4-item1-status" class="status" style="color: green;">[Available]</p>
-      <button id="section4-item1-button" class="reserve-button" onclick="reserveItem('section4-item1')">Reserve</button>
-    </div>
-    <div class="item-card" id="section4-item2-card">
-      <img src="https://placekitten.com/201/150" alt="Item 2" class="item-image">
-      <p id="section4-item2-status" class="status" style="color: green;">[Available]</p>
-      <button id="section4-item2-button" class="reserve-button" onclick="reserveItem('section4-item2')">Reserve</button>
-    </div>
-  </div>
-
-  <!-- Section 5: Nepal Items (Candidate Details) -->
-  <div id="section5" class="section">
-    <div class="back-button" onclick="goHome()">← Back</div>
     <h2>Nepal Candidates</h2>
-    <div class="item-card" id="section5-item1-card">
-      <img src="https://via.placeholder.com/200?text=Candidate+NP" alt="Candidate Nepal" class="item-image">
-      <p id="section5-item1-status" class="status" style="color: green;">[Available]</p>
+    
+    <!-- Candidate 1 -->
+    <div class="item-card" id="section2-item1-card">
+      <img src="https://imgur.com/lqsMEmG" alt="Candidate Nepal 1" class="item-image">
+      <p id="section2-item1-status" class="status" style="color: green;">[Available]</p>
       <p>
         <strong>Candidate 1</strong><br>
         30 years old<br>
@@ -242,8 +169,112 @@
         Languages: Arabic<br>
         Skills: Cleaning, Babysitter
       </p>
-      <button id="section5-item1-button" class="reserve-button" onclick="reserveItem('section5-item1')">Reserve</button>
+      <button id="section2-item1-button" class="reserve-button" onclick="reserveItem('section2-item1')">Reserve</button>
     </div>
+    
+    <!-- Candidate 2 -->
+    <div class="item-card" id="section2-item2-card">
+      <img src="https://imgur.com/6POnjb7" alt="Candidate Nepal 2" class="item-image">
+      <p id="section2-item2-status" class="status" style="color: green;">[Available]</p>
+      <p>
+        <strong>Candidate 2</strong><br>
+        37 years old<br>
+        20 days in Kuwait<br>
+        Languages: No Arabic, No English<br>
+        Skills: Cleaning, Babysitter, Ironing
+      </p>
+      <button id="section2-item2-button" class="reserve-button" onclick="reserveItem('section2-item2')">Reserve</button>
+    </div>
+    
+    <!-- Candidate 3 -->
+    <div class="item-card" id="section2-item3-card">
+      <img src="https://imgur.com/YN5PNec" alt="Candidate Nepal 3" class="item-image">
+      <p id="section2-item3-status" class="status" style="color: green;">[Available]</p>
+      <p>
+        <strong>Candidate 3</strong><br>
+        23 years old<br>
+        6 months in Kuwait<br>
+        Languages: Arabic<br>
+        Skills: Cleaning, Cook, Babysitter
+      </p>
+      <button id="section2-item3-button" class="reserve-button" onclick="reserveItem('section2-item3')">Reserve</button>
+    </div>
+    
+    <!-- Candidate 4 -->
+    <div class="item-card" id="section2-item4-card">
+      <img src="https://imgur.com/3MZgKOn" alt="Candidate Nepal 4" class="item-image">
+      <p id="section2-item4-status" class="status" style="color: green;">[Available]</p>
+      <p>
+        <strong>Candidate 4</strong><br>
+        46 years old<br>
+        20 days in Kuwait<br>
+        Languages: No Arabic, No English<br>
+        Skills: Cleaning, Babysitter
+      </p>
+      <button id="section2-item4-button" class="reserve-button" onclick="reserveItem('section2-item4')">Reserve</button>
+    </div>
+    
+    <!-- Candidate 5 -->
+    <div class="item-card" id="section2-item5-card">
+      <img src="https://imgur.com/RGVDWyv" alt="Candidate Nepal 5" class="item-image">
+      <p id="section2-item5-status" class="status" style="color: green;">[Available]</p>
+      <p>
+        <strong>Candidate 5</strong><br>
+        31 years old<br>
+        1 month in Kuwait<br>
+        Languages: No Arabic, No English<br>
+        Skills: Cleaning, Babysitter
+      </p>
+      <button id="section2-item5-button" class="reserve-button" onclick="reserveItem('section2-item5')">Reserve</button>
+    </div>
+  </div>
+
+  <!-- Section 3: India Candidates -->
+  <div id="section3" class="section">
+    <div class="back-button" onclick="goHome()">← Back</div>
+    <h2>India Candidates</h2>
+    
+    <!-- Candidate 1 -->
+    <div class="item-card" id="section3-item1-card">
+      <img src="https://imgur.com/pJdIWbP" alt="Candidate India 1" class="item-image">
+      <p id="section3-item1-status" class="status" style="color: green;">[Available]</p>
+      <p>
+        <strong>Candidate 1</strong><br>
+        29 years old<br>
+        4 months in Kuwait<br>
+        Languages: Arabic<br>
+        Skills: Cleaning, Babysitter
+      </p>
+      <button id="section3-item1-button" class="reserve-button" onclick="reserveItem('section3-item1')">Reserve</button>
+    </div>
+    
+    <!-- Candidate 2 -->
+    <div class="item-card" id="section3-item2-card">
+      <img src="https://imgur.com/e8ydY62" alt="Candidate India 2" class="item-image">
+      <p id="section3-item2-status" class="status" style="color: green;">[Available]</p>
+      <p>
+        <strong>Candidate 2</strong><br>
+        48 years old<br>
+        2 months in Kuwait<br>
+        Languages: No Arabic, No English<br>
+        Skills: Cleaning, Babysitter
+      </p>
+      <button id="section3-item2-button" class="reserve-button" onclick="reserveItem('section3-item2')">Reserve</button>
+    </div>
+  </div>
+
+  <!-- Section 4: Africa (Empty Section) -->
+  <div id="section4" class="section">
+    <div class="back-button" onclick="goHome()">← Back</div>
+    <h2>Africa</h2>
+    <p>No items available in the Africa section.</p>
+  </div>
+
+  <!-- Section 5: Philippines (Empty Section) -->
+  <div id="section5" class="section">
+    <div class="back-button" onclick="goHome()">← Back</div>
+    <h2>Philippines</h2>
+    <p>No items available in the Philippines section.</p>
   </div>
 
   <!-- Firebase Initialization & App Logic Using Module-Based CDN -->
@@ -252,7 +283,7 @@
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-app.js";
     import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-analytics.js";
     import { getFirestore, doc, setDoc, getDocs, collection } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-firestore.js";
-
+    
     // Your Firebase configuration (replace these with your actual config values)
     const firebaseConfig = {
       apiKey: "AIzaSyBa2i6Dv-Wi5KAUe91DeNL5U9L--HZkni0",
