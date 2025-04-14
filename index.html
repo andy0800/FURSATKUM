@@ -19,7 +19,7 @@
     h1, h2 {
       margin: 20px 0;
     }
-    /* Homepage - each section item container */
+    /* Homepage - Country Section Items Container */
     .section-item {
       display: inline-block;
       margin: 20px;
@@ -45,7 +45,7 @@
       transform: scale(1.1);
       box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
     }
-    /* Sections (individual pages) */
+    /* Hide sections by default */
     .section {
       display: none;
       padding: 30px;
@@ -103,7 +103,7 @@
   </style>
 </head>
 <body>
-  <!-- Homepage: Four Country Sections -->
+  <!-- Homepage: Five Country Sections -->
   <div id="home">
     <h1>Welcome to Our Reservation Site</h1>
     <div class="section-item" onclick="openSection('section1')">
@@ -115,13 +115,17 @@
       <div class="section-label">Philippines</div>
     </div>
     <div class="section-item" onclick="openSection('section3')">
-      <!-- For "African" we use South Africa's flag as an example -->
+      <!-- Using South Africa as example for "African" -->
       <div class="section-circle" style="background-image: url('https://flagcdn.com/w320/za.png');"></div>
       <div class="section-label">African</div>
     </div>
     <div class="section-item" onclick="openSection('section4')">
       <div class="section-circle" style="background-image: url('https://flagcdn.com/w320/in.png');"></div>
       <div class="section-label">Indian</div>
+    </div>
+    <div class="section-item" onclick="openSection('section5')">
+      <div class="section-circle" style="background-image: url('https://flagcdn.com/w320/np.png');"></div>
+      <div class="section-label">Nepal</div>
     </div>
   </div>
 
@@ -189,14 +193,30 @@
     </div>
   </div>
 
-  <!-- Firebase Initialization & App Logic (Module-based) -->
+  <!-- Section 5: Nepal Items -->
+  <div id="section5" class="section">
+    <div class="back-button" onclick="goHome()">← Back</div>
+    <h2>Nepal Items</h2>
+    <div class="item-card" id="section5-item1-card">
+      <img src="https://placekitten.com/200/150" alt="Item 1" class="item-image">
+      <p id="section5-item1-status" class="status" style="color: green;">[Available]</p>
+      <button id="section5-item1-button" class="reserve-button" onclick="reserveItem('section5-item1')">Reserve</button>
+    </div>
+    <div class="item-card" id="section5-item2-card">
+      <img src="https://placekitten.com/201/150" alt="Item 2" class="item-image">
+      <p id="section5-item2-status" class="status" style="color: green;">[Available]</p>
+      <button id="section5-item2-button" class="reserve-button" onclick="reserveItem('section5-item2')">Reserve</button>
+    </div>
+  </div>
+
+  <!-- Firebase Initialization & App Logic Using Module-Based CDN -->
   <script type="module">
     // Import needed functions from Firebase SDK
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-app.js";
     import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-analytics.js";
     import { getFirestore, doc, setDoc, getDocs, collection } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-firestore.js";
 
-    // Your Firebase configuration (replace with your actual config values)
+    // Your Firebase configuration (replace these with your actual config values)
     const firebaseConfig = {
       apiKey: "AIzaSyBa2i6Dv-Wi5KAUe91DeNL5U9L--HZkni0",
       authDomain: "fursatkum-792e8.firebaseapp.com",
@@ -236,7 +256,7 @@
       if (button.disabled) return;
       console.log("reserveItem called for:", itemId);
       try {
-        // Write to Firestore ("reservations" collection gets auto-created if needed)
+        // Write to Firestore (the "reservations" collection is created automatically if needed)
         await setDoc(doc(db, "reservations", itemId), { reserved: true });
         console.log("Item reserved successfully for:", itemId);
         const statusEl = document.getElementById(itemId + '-status');
@@ -248,7 +268,7 @@
       }
     };
 
-    // When the page loads, update reserved items from Firestore
+    // On page load, update reserved items from Firestore
     async function updateReservations() {
       try {
         const querySnapshot = await getDocs(collection(db, "reservations"));
