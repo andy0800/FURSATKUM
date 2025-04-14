@@ -96,6 +96,22 @@
       background: #ccc;
       cursor: not-allowed;
     }
+    /* Reset button (if needed) styling */
+    #reset-container {
+      margin: 20px;
+    }
+    #reset-button {
+      padding: 10px 20px;
+      background: #FF9800;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+    #reset-button:hover {
+      background: #F57C00;
+    }
     @keyframes fadeIn {
       from { opacity: 0; }
       to   { opacity: 1; }
@@ -115,7 +131,7 @@
       <div class="section-label">Philippines</div>
     </div>
     <div class="section-item" onclick="openSection('section3')">
-      <!-- Using South Africa as example for "African" -->
+      <!-- Using South Africa's flag as an example for "African" -->
       <div class="section-circle" style="background-image: url('https://flagcdn.com/w320/za.png');"></div>
       <div class="section-label">African</div>
     </div>
@@ -126,6 +142,10 @@
     <div class="section-item" onclick="openSection('section5')">
       <div class="section-circle" style="background-image: url('https://flagcdn.com/w320/np.png');"></div>
       <div class="section-label">Nepal</div>
+    </div>
+    <!-- (Optional) Reset Reservations Button on Homepage -->
+    <div id="reset-container">
+      <button id="reset-button" onclick="resetReservations()">Reset Reservations</button>
     </div>
   </div>
 
@@ -145,19 +165,45 @@
     </div>
   </div>
 
-  <!-- Section 2: Philippines Items -->
+  <!-- Section 2: Philippines Items (Updated with 6 items) -->
   <div id="section2" class="section">
     <div class="back-button" onclick="goHome()">← Back</div>
     <h2>Philippines Items</h2>
+    <!-- Item 1: TIGUAN -->
     <div class="item-card" id="section2-item1-card">
-      <img src="https://placekitten.com/200/150" alt="Item 1" class="item-image">
+      <img src="https://via.placeholder.com/200x150?text=TIGUAN" alt="TIGUAN" class="item-image">
       <p id="section2-item1-status" class="status" style="color: green;">[Available]</p>
       <button id="section2-item1-button" class="reserve-button" onclick="reserveItem('section2-item1')">Reserve</button>
     </div>
+    <!-- Item 2: IPHONE 16E -->
     <div class="item-card" id="section2-item2-card">
-      <img src="https://placekitten.com/201/150" alt="Item 2" class="item-image">
+      <img src="https://via.placeholder.com/200x150?text=IPHONE+16E" alt="IPHONE 16E" class="item-image">
       <p id="section2-item2-status" class="status" style="color: green;">[Available]</p>
       <button id="section2-item2-button" class="reserve-button" onclick="reserveItem('section2-item2')">Reserve</button>
+    </div>
+    <!-- Item 3: JET SKI -->
+    <div class="item-card" id="section2-item3-card">
+      <img src="https://via.placeholder.com/200x150?text=JET+SKI" alt="JET SKI" class="item-image">
+      <p id="section2-item3-status" class="status" style="color: green;">[Available]</p>
+      <button id="section2-item3-button" class="reserve-button" onclick="reserveItem('section2-item3')">Reserve</button>
+    </div>
+    <!-- Item 4: PC -->
+    <div class="item-card" id="section2-item4-card">
+      <img src="https://via.placeholder.com/200x150?text=PC" alt="PC" class="item-image">
+      <p id="section2-item4-status" class="status" style="color: green;">[Available]</p>
+      <button id="section2-item4-button" class="reserve-button" onclick="reserveItem('section2-item4')">Reserve</button>
+    </div>
+    <!-- Item 5: HONOR -->
+    <div class="item-card" id="section2-item5-card">
+      <img src="https://via.placeholder.com/200x150?text=HONOR" alt="HONOR" class="item-image">
+      <p id="section2-item5-status" class="status" style="color: green;">[Available]</p>
+      <button id="section2-item5-button" class="reserve-button" onclick="reserveItem('section2-item5')">Reserve</button>
+    </div>
+    <!-- Item 6: ACADEA -->
+    <div class="item-card" id="section2-item6-card">
+      <img src="https://via.placeholder.com/200x150?text=ACADEA" alt="ACADEA" class="item-image">
+      <p id="section2-item6-status" class="status" style="color: green;">[Available]</p>
+      <button id="section2-item6-button" class="reserve-button" onclick="reserveItem('section2-item6')">Reserve</button>
     </div>
   </div>
 
@@ -214,7 +260,7 @@
     // Import needed functions from Firebase SDK
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-app.js";
     import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-analytics.js";
-    import { getFirestore, doc, setDoc, getDocs, collection } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-firestore.js";
+    import { getFirestore, doc, setDoc, getDocs, collection, deleteDoc } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-firestore.js";
 
     // Your Firebase configuration (replace these with your actual config values)
     const firebaseConfig = {
@@ -265,6 +311,28 @@
         button.disabled = true;
       } catch (error) {
         console.error("Error reserving item:", error);
+      }
+    };
+
+    // Reset Reservations function – deletes all reserved documents and resets UI
+    window.resetReservations = async function() {
+      try {
+        const querySnapshot = await getDocs(collection(db, "reservations"));
+        querySnapshot.forEach(async (docSnap) => {
+          // Delete each document from the "reservations" collection
+          await deleteDoc(doc(db, "reservations", docSnap.id));
+          // Update UI for the corresponding item if it exists
+          const statusEl = document.getElementById(docSnap.id + '-status');
+          const buttonEl = document.getElementById(docSnap.id + '-button');
+          if (statusEl && buttonEl) {
+            statusEl.innerText = "[Available]";
+            statusEl.style.color = "green";
+            buttonEl.disabled = false;
+          }
+        });
+        console.log("All reservations have been reset.");
+      } catch (error) {
+        console.error("Error resetting reservations:", error);
       }
     };
 
