@@ -96,22 +96,6 @@
       background: #ccc;
       cursor: not-allowed;
     }
-    /* Reset button (if needed) styling */
-    #reset-container {
-      margin: 20px;
-    }
-    #reset-button {
-      padding: 10px 20px;
-      background: #FF9800;
-      color: #fff;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      font-size: 16px;
-    }
-    #reset-button:hover {
-      background: #F57C00;
-    }
     @keyframes fadeIn {
       from { opacity: 0; }
       to   { opacity: 1; }
@@ -122,50 +106,55 @@
   <!-- Homepage: Five Country Sections -->
   <div id="home">
     <h1>Welcome to Our Reservation Site</h1>
+    <!-- Sri Lanka Section -->
     <div class="section-item" onclick="openSection('section1')">
       <div class="section-circle" style="background-image: url('https://flagcdn.com/w320/lk.png');"></div>
       <div class="section-label">Sri Lanka</div>
     </div>
+    <!-- Philippines Section (unchanged) -->
     <div class="section-item" onclick="openSection('section2')">
       <div class="section-circle" style="background-image: url('https://flagcdn.com/w320/ph.png');"></div>
       <div class="section-label">Philippines</div>
     </div>
+    <!-- African Section (unchanged; using South Africa's flag as an example) -->
     <div class="section-item" onclick="openSection('section3')">
-      <!-- Using South Africa's flag as an example for "African" -->
       <div class="section-circle" style="background-image: url('https://flagcdn.com/w320/za.png');"></div>
       <div class="section-label">African</div>
     </div>
+    <!-- Indian Section (unchanged) -->
     <div class="section-item" onclick="openSection('section4')">
       <div class="section-circle" style="background-image: url('https://flagcdn.com/w320/in.png');"></div>
       <div class="section-label">Indian</div>
     </div>
+    <!-- Nepal Section -->
     <div class="section-item" onclick="openSection('section5')">
       <div class="section-circle" style="background-image: url('https://flagcdn.com/w320/np.png');"></div>
       <div class="section-label">Nepal</div>
     </div>
-    <!-- (Optional) Reset Reservations Button on Homepage -->
-    <div id="reset-container">
-      <button id="reset-button" onclick="resetReservations()">Reset Reservations</button>
-    </div>
   </div>
 
-  <!-- Section 1: Sri Lanka Items -->
+  <!-- Section 1: Sri Lanka Items (Candidate Details) -->
   <div id="section1" class="section">
     <div class="back-button" onclick="goHome()">← Back</div>
-    <h2>Sri Lanka Items</h2>
+    <h2>Sri Lanka Candidates</h2>
     <div class="item-card" id="section1-item1-card">
-      <img src="https://placekitten.com/200/150" alt="Item 1" class="item-image">
+      <!-- Placeholder candidate image; replace with the real picture if available -->
+      <img src="https://via.placeholder.com/200?text=Candidate+SL" alt="Candidate Sri Lanka" class="item-image">
+      <!-- Status text starts as Available (green) -->
       <p id="section1-item1-status" class="status" style="color: green;">[Available]</p>
+      <!-- Candidate details -->
+      <p>
+        <strong>Candidate 1</strong><br>
+        29 years old<br>
+        1 yr &amp; 2 months in Kuwait<br>
+        Languages: Arabic/English<br>
+        Skills: Cleaning, ironing, washing
+      </p>
       <button id="section1-item1-button" class="reserve-button" onclick="reserveItem('section1-item1')">Reserve</button>
-    </div>
-    <div class="item-card" id="section1-item2-card">
-      <img src="https://placekitten.com/201/150" alt="Item 2" class="item-image">
-      <p id="section1-item2-status" class="status" style="color: green;">[Available]</p>
-      <button id="section1-item2-button" class="reserve-button" onclick="reserveItem('section1-item2')">Reserve</button>
     </div>
   </div>
 
-  <!-- Section 2: Philippines Items (Updated with 6 items) -->
+  <!-- Section 2: Philippines Items (6 Items) -->
   <div id="section2" class="section">
     <div class="back-button" onclick="goHome()">← Back</div>
     <h2>Philippines Items</h2>
@@ -207,7 +196,7 @@
     </div>
   </div>
 
-  <!-- Section 3: African Items -->
+  <!-- Section 3: African Items (unchanged) -->
   <div id="section3" class="section">
     <div class="back-button" onclick="goHome()">← Back</div>
     <h2>African Items</h2>
@@ -223,7 +212,7 @@
     </div>
   </div>
 
-  <!-- Section 4: Indian Items -->
+  <!-- Section 4: Indian Items (unchanged) -->
   <div id="section4" class="section">
     <div class="back-button" onclick="goHome()">← Back</div>
     <h2>Indian Items</h2>
@@ -239,19 +228,21 @@
     </div>
   </div>
 
-  <!-- Section 5: Nepal Items -->
+  <!-- Section 5: Nepal Items (Candidate Details) -->
   <div id="section5" class="section">
     <div class="back-button" onclick="goHome()">← Back</div>
-    <h2>Nepal Items</h2>
+    <h2>Nepal Candidates</h2>
     <div class="item-card" id="section5-item1-card">
-      <img src="https://placekitten.com/200/150" alt="Item 1" class="item-image">
+      <img src="https://via.placeholder.com/200?text=Candidate+NP" alt="Candidate Nepal" class="item-image">
       <p id="section5-item1-status" class="status" style="color: green;">[Available]</p>
+      <p>
+        <strong>Candidate 1</strong><br>
+        30 years old<br>
+        3 months in Kuwait<br>
+        Languages: Arabic<br>
+        Skills: Cleaning, Babysitter
+      </p>
       <button id="section5-item1-button" class="reserve-button" onclick="reserveItem('section5-item1')">Reserve</button>
-    </div>
-    <div class="item-card" id="section5-item2-card">
-      <img src="https://placekitten.com/201/150" alt="Item 2" class="item-image">
-      <p id="section5-item2-status" class="status" style="color: green;">[Available]</p>
-      <button id="section5-item2-button" class="reserve-button" onclick="reserveItem('section5-item2')">Reserve</button>
     </div>
   </div>
 
@@ -260,7 +251,7 @@
     // Import needed functions from Firebase SDK
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-app.js";
     import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-analytics.js";
-    import { getFirestore, doc, setDoc, getDocs, collection, deleteDoc } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-firestore.js";
+    import { getFirestore, doc, setDoc, getDocs, collection } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-firestore.js";
 
     // Your Firebase configuration (replace these with your actual config values)
     const firebaseConfig = {
@@ -311,28 +302,6 @@
         button.disabled = true;
       } catch (error) {
         console.error("Error reserving item:", error);
-      }
-    };
-
-    // Reset Reservations function – deletes all reserved documents and resets UI
-    window.resetReservations = async function() {
-      try {
-        const querySnapshot = await getDocs(collection(db, "reservations"));
-        querySnapshot.forEach(async (docSnap) => {
-          // Delete each document from the "reservations" collection
-          await deleteDoc(doc(db, "reservations", docSnap.id));
-          // Update UI for the corresponding item if it exists
-          const statusEl = document.getElementById(docSnap.id + '-status');
-          const buttonEl = document.getElementById(docSnap.id + '-button');
-          if (statusEl && buttonEl) {
-            statusEl.innerText = "[Available]";
-            statusEl.style.color = "green";
-            buttonEl.disabled = false;
-          }
-        });
-        console.log("All reservations have been reset.");
-      } catch (error) {
-        console.error("Error resetting reservations:", error);
       }
     };
 
