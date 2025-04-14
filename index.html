@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Reservation Home</title>
+  <!-- Google Font for a modern look -->
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet" />
+  <style>
+    /* Global Styles */
+    body {
+      font-family: 'Roboto', sans-serif;
+      margin: 0;
+      padding: 0;
+      background: #f1f1f1;
+      text-align: center;
+      color: #333;
+    }
+    h1, h2 {
+      margin: 20px 0;
+    }
+    /* Homepage - each section item container */
+    .section-item {
+      display: inline-block;
+      margin: 20px;
+      text-align: center;
+      cursor: pointer;
+    }
+    .section-label {
+      margin-top: 8px;
+      font-size: 18px;
+      font-weight: 500;
+    }
+    /* Circle with flag background */
+    .section-circle {
+      width: 150px;
+      height: 150px;
+      border-radius: 50%;
+      border: 3px solid #4CAF50;
+      background-size: cover;
+      background-position: center;
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+    .section-circle:hover {
+      transform: scale(1.1);
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    }
+    /* Sections (individual pages) */
+    .section {
+      display: none;
+      padding: 30px;
+      animation: fadeIn 0.5s;
+    }
+    .back-button {
+      margin: 20px;
+      font-size: 18px;
+      cursor: pointer;
+      color: #2196F3;
+      text-decoration: underline;
+    }
+    /* Item card style */
+    .item-card {
+      background: #fff;
+      margin: 15px auto;
+      padding: 15px;
+      width: 220px;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      display: inline-block;
+      text-align: left;
+    }
+    .item-image {
+      width: 100%;
+      border-radius: 8px;
+    }
+    .status {
+      margin-top: 10px;
+      font-weight: 700;
+    }
+    .reserve-button {
+      margin-top: 10px;
+      padding: 10px 15px;
+      background: #4CAF50;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background 0.3s;
+      width: 100%;
+      font-weight: 500;
+    }
+    .reserve-button:hover {
+      background: #45a049;
+    }
+    .reserve-button:disabled {
+      background: #ccc;
+      cursor: not-allowed;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to   { opacity: 1; }
+    }
+  </style>
+</head>
+<body>
+  <!-- Homepage: Four Country Sections -->
+  <div id="home">
+    <h1>Welcome to Our Reservation Site</h1>
+    <div class="section-item" onclick="openSection('section1')">
+      <div class="section-circle" style="background-image: url('https://flagcdn.com/w320/lk.png');"></div>
+      <div class="section-label">Sri Lanka</div>
+    </div>
+    <div class="section-item" onclick="openSection('section2')">
+      <div class="section-circle" style="background-image: url('https://flagcdn.com/w320/ph.png');"></div>
+      <div class="section-label">Philippines</div>
+    </div>
+    <div class="section-item" onclick="openSection('section3')">
+      <!-- For "African" we use South Africa's flag as an example -->
+      <div class="section-circle" style="background-image: url('https://flagcdn.com/w320/za.png');"></div>
+      <div class="section-label">African</div>
+    </div>
+    <div class="section-item" onclick="openSection('section4')">
+      <div class="section-circle" style="background-image: url('https://flagcdn.com/w320/in.png');"></div>
+      <div class="section-label">Indian</div>
+    </div>
+  </div>
+
+  <!-- Section 1: Sri Lanka Items -->
+  <div id="section1" class="section">
+    <div class="back-button" onclick="goHome()">← Back</div>
+    <h2>Sri Lanka Items</h2>
+    <div class="item-card" id="section1-item1-card">
+      <img src="https://placekitten.com/200/150" alt="Item 1" class="item-image">
+      <p id="section1-item1-status" class="status" style="color: green;">[Available]</p>
+      <button id="section1-item1-button" class="reserve-button" onclick="reserveItem('section1-item1')">Reserve</button>
+    </div>
+    <div class="item-card" id="section1-item2-card">
+      <img src="https://placekitten.com/201/150" alt="Item 2" class="item-image">
+      <p id="section1-item2-status" class="status" style="color: green;">[Available]</p>
+      <button id="section1-item2-button" class="reserve-button" onclick="reserveItem('section1-item2')">Reserve</button>
+    </div>
+  </div>
+
+  <!-- Section 2: Philippines Items -->
+  <div id="section2" class="section">
+    <div class="back-button" onclick="goHome()">← Back</div>
+    <h2>Philippines Items</h2>
+    <div class="item-card" id="section2-item1-card">
+      <img src="https://placekitten.com/200/150" alt="Item 1" class="item-image">
+      <p id="section2-item1-status" class="status" style="color: green;">[Available]</p>
+      <button id="section2-item1-button" class="reserve-button" onclick="reserveItem('section2-item1')">Reserve</button>
+    </div>
+    <div class="item-card" id="section2-item2-card">
+      <img src="https://placekitten.com/201/150" alt="Item 2" class="item-image">
+      <p id="section2-item2-status" class="status" style="color: green;">[Available]</p>
+      <button id="section2-item2-button" class="reserve-button" onclick="reserveItem('section2-item2')">Reserve</button>
+    </div>
+  </div>
+
+  <!-- Section 3: African Items -->
+  <div id="section3" class="section">
+    <div class="back-button" onclick="goHome()">← Back</div>
+    <h2>African Items</h2>
+    <div class="item-card" id="section3-item1-card">
+      <img src="https://placekitten.com/200/150" alt="Item 1" class="item-image">
+      <p id="section3-item1-status" class="status" style="color: green;">[Available]</p>
+      <button id="section3-item1-button" class="reserve-button" onclick="reserveItem('section3-item1')">Reserve</button>
+    </div>
+    <div class="item-card" id="section3-item2-card">
+      <img src="https://placekitten.com/201/150" alt="Item 2" class="item-image">
+      <p id="section3-item2-status" class="status" style="color: green;">[Available]</p>
+      <button id="section3-item2-button" class="reserve-button" onclick="reserveItem('section3-item2')">Reserve</button>
+    </div>
+  </div>
+
+  <!-- Section 4: Indian Items -->
+  <div id="section4" class="section">
+    <div class="back-button" onclick="goHome()">← Back</div>
+    <h2>Indian Items</h2>
+    <div class="item-card" id="section4-item1-card">
+      <img src="https://placekitten.com/200/150" alt="Item 1" class="item-image">
+      <p id="section4-item1-status" class="status" style="color: green;">[Available]</p>
+      <button id="section4-item1-button" class="reserve-button" onclick="reserveItem('section4-item1')">Reserve</button>
+    </div>
+    <div class="item-card" id="section4-item2-card">
+      <img src="https://placekitten.com/201/150" alt="Item 2" class="item-image">
+      <p id="section4-item2-status" class="status" style="color: green;">[Available]</p>
+      <button id="section4-item2-button" class="reserve-button" onclick="reserveItem('section4-item2')">Reserve</button>
+    </div>
+  </div>
+
+  <!-- Firebase Initialization & App Logic (Module-based) -->
+  <script type="module">
+    // Import needed functions from Firebase SDK
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-app.js";
+    import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-analytics.js";
+    import { getFirestore, doc, setDoc, getDocs, collection } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-firestore.js";
+
+    // Your Firebase configuration (replace with your actual config values)
+    const firebaseConfig = {
+      apiKey: "AIzaSyBa2i6Dv-Wi5KAUe91DeNL5U9L--HZkni0",
+      authDomain: "fursatkum-792e8.firebaseapp.com",
+      projectId: "fursatkum-792e8",
+      storageBucket: "fursatkum-792e8.firebasestorage.app",
+      messagingSenderId: "275915365900",
+      appId: "1:275915365900:web:b365e63d2da8cbd3691829",
+      measurementId: "G-FLSGFE2QYV"
+    };
+
+    // Initialize Firebase and Analytics
+    const app = initializeApp(firebaseConfig);
+    const analytics = getAnalytics(app);
+    const db = getFirestore(app);
+
+    // Navigation functions
+    window.openSection = function(sectionId) {
+      document.getElementById('home').style.display = 'none';
+      const sections = document.getElementsByClassName('section');
+      for (let sec of sections) {
+        sec.style.display = 'none';
+      }
+      document.getElementById(sectionId).style.display = 'block';
+    };
+
+    window.goHome = function() {
+      const sections = document.getElementsByClassName('section');
+      for (let sec of sections) {
+        sec.style.display = 'none';
+      }
+      document.getElementById('home').style.display = 'block';
+    };
+
+    // Reservation function – writes to Firestore and updates UI
+    window.reserveItem = async function(itemId) {
+      const button = document.getElementById(itemId + '-button');
+      if (button.disabled) return;
+      console.log("reserveItem called for:", itemId);
+      try {
+        // Write to Firestore ("reservations" collection gets auto-created if needed)
+        await setDoc(doc(db, "reservations", itemId), { reserved: true });
+        console.log("Item reserved successfully for:", itemId);
+        const statusEl = document.getElementById(itemId + '-status');
+        statusEl.innerText = "[Reserved]";
+        statusEl.style.color = "red";
+        button.disabled = true;
+      } catch (error) {
+        console.error("Error reserving item:", error);
+      }
+    };
+
+    // When the page loads, update reserved items from Firestore
+    async function updateReservations() {
+      try {
+        const querySnapshot = await getDocs(collection(db, "reservations"));
+        querySnapshot.forEach((docSnap) => {
+          if (docSnap.data().reserved === true) {
+            const itemId = docSnap.id;
+            const statusEl = document.getElementById(itemId + '-status');
+            const buttonEl = document.getElementById(itemId + '-button');
+            if (statusEl && buttonEl) {
+              statusEl.innerText = "[Reserved]";
+              statusEl.style.color = "red";
+              buttonEl.disabled = true;
+            }
+          }
+        });
+      } catch (error) {
+        console.error("Error fetching reservations:", error);
+      }
+    }
+
+    document.addEventListener("DOMContentLoaded", updateReservations);
+  </script>
+</body>
+</html>
