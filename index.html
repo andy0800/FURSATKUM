@@ -7,7 +7,7 @@
   <!-- Google Font for a modern look -->
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet" />
   <style>
-    /* Global Styles */
+    /* --- Global Styles --- */
     body {
       font-family: 'Roboto', sans-serif;
       margin: 0;
@@ -16,12 +16,11 @@
       text-align: center;
       color: #333;
     }
-    
     h1, h2 {
       margin: 20px 0;
     }
     
-    /* Homepage: Section Items Container */
+    /* --- Homepage Section Items --- */
     .section-item {
       display: inline-block;
       margin: 20px;
@@ -33,8 +32,6 @@
       font-size: 18px;
       font-weight: 500;
     }
-    
-    /* Circle with flag background for homepage items */
     .section-circle {
       width: 150px;
       height: 150px;
@@ -49,7 +46,7 @@
       box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
     }
     
-    /* Hide sections (pages) by default */
+    /* --- Sections (Pages) --- */
     .section {
       display: none;
       padding: 30px;
@@ -63,7 +60,7 @@
       text-decoration: underline;
     }
     
-    /* Candidate Card Style */
+    /* --- Candidate Card Style --- */
     .item-card {
       background: #fff;
       margin: 15px auto;
@@ -75,7 +72,7 @@
       text-align: left;
     }
     
-    /* Fixed square image with a 200x200 fixed size, object-fit cover */
+    /* Fixed square candidate image */
     .item-image {
       width: 200px;
       height: 200px;
@@ -85,12 +82,10 @@
       display: block;
       margin: 0 auto;
     }
-    
     .status {
       margin-top: 10px;
       font-weight: 700;
     }
-    
     .reserve-button {
       margin-top: 10px;
       padding: 10px;
@@ -113,7 +108,7 @@
     
     @keyframes fadeIn {
       from { opacity: 0; }
-      to   { opacity: 1; }
+      to { opacity: 1; }
     }
   </style>
 </head>
@@ -147,14 +142,14 @@
       <div class="section-label">Philippines</div>
     </div>
   </div>
-
+  
   <!-- Section 1: Sri Lanka Candidates -->
   <div id="section1" class="section">
     <div class="back-button" onclick="goHome()">← Back</div>
     <h2>Sri Lanka Candidates</h2>
     <!-- Candidate 1 -->
     <div class="item-card">
-      <img src="https://imgur.com/SHfuTe6.jpg" alt="Sri Lanka Candidate 1" class="item-image">
+      <img src="https://i.imgur.com/SHfuTe6.jpg" alt="Sri Lanka Candidate 1" class="item-image">
       <p id="sl1-status">
         <strong>29 years old</strong><br>
         1 yr &amp; 2 months in Kuwait<br>
@@ -165,7 +160,7 @@
     </div>
     <!-- Candidate 2 -->
     <div class="item-card">
-      <img src="https://imgur.com/LKyJDsj.jpg" alt="Sri Lanka Candidate 2" class="item-image">
+      <img src="https://i.imgur.com/LKyJDsj.jpg" alt="Sri Lanka Candidate 2" class="item-image">
       <p id="sl2-status">
         <strong>57 years old</strong><br>
         1 month in Kuwait<br>
@@ -176,7 +171,7 @@
       <button id="sl2-button" class="reserve-button" onclick="reserveItem('sl2')">Reserve</button>
     </div>
   </div>
-
+  
   <!-- Section 2: Nepal Candidates -->
   <div id="section2" class="section">
     <div class="back-button" onclick="goHome()">← Back</div>
@@ -216,7 +211,7 @@
     </div>
     <!-- Candidate 4 -->
     <div class="item-card">
-      <img src="https://imgur.com/3MZgKOn.jpg" alt="Nepal Candidate 4" class="item-image">
+      <img src="https://i.imgur.com/3MZgKOn.jpg" alt="Nepal Candidate 4" class="item-image">
       <p id="np4-status">
         <strong>46 years old</strong><br>
         20 days in Kuwait<br>
@@ -227,7 +222,7 @@
     </div>
     <!-- Candidate 5 -->
     <div class="item-card">
-      <img src="https://imgur.com/RGVDWyv.jpg" alt="Nepal Candidate 5" class="item-image">
+      <img src="https://i.imgur.com/RGVDWyv.jpg" alt="Nepal Candidate 5" class="item-image">
       <p id="np5-status">
         <strong>31 years old</strong><br>
         1 month in Kuwait<br>
@@ -238,7 +233,7 @@
     </div>
     <!-- Candidate 6 -->
     <div class="item-card">
-      <img src="https://imgur.com/YXiDV7A.jpg" alt="Nepal Candidate 6" class="item-image">
+      <img src="https://i.imgur.com/YXiDV7A.jpg" alt="Nepal Candidate 6" class="item-image">
       <p id="np6-status">
         <strong>29 years old</strong><br>
         4 days in Kuwait<br>
@@ -250,7 +245,7 @@
     </div>
     <!-- Candidate 7 -->
     <div class="item-card">
-      <img src="https://imgur.com/r38bnvQ.jpg" alt="Nepal Candidate 7" class="item-image">
+      <img src="https://i.imgur.com/r38bnvQ.jpg" alt="Nepal Candidate 7" class="item-image">
       <p id="np7-status">
         <strong>36 years old</strong><br>
         4 days in Kuwait<br>
@@ -263,7 +258,7 @@
     </div>
     <!-- Candidate 8 -->
     <div class="item-card">
-      <img src="https://imgur.com/frcZXWG.jpg" alt="Nepal Candidate 8" class="item-image">
+      <img src="https://i.imgur.com/frcZXWG.jpg" alt="Nepal Candidate 8" class="item-image">
       <p id="np8-status">
         <strong>39 years old</strong><br>
         5 months in Kuwait<br>
@@ -274,7 +269,7 @@
     </div>
     <!-- Candidate 9 -->
     <div class="item-card">
-      <img src="https://imgur.com/UB8jMUZ.jpg" alt="Nepal Candidate 9" class="item-image">
+      <img src="https://i.imgur.com/UB8jMUZ.jpg" alt="Nepal Candidate 9" class="item-image">
       <p id="np9-status">
         <strong>40 years old</strong><br>
         2 months in Kuwait<br>
@@ -285,7 +280,7 @@
     </div>
     <!-- Candidate 10 -->
     <div class="item-card">
-      <img src="https://imgur.com/uIYAt6u.jpg" alt="Nepal Candidate 10" class="item-image">
+      <img src="https://i.imgur.com/uIYAt6u.jpg" alt="Nepal Candidate 10" class="item-image">
       <p id="np10-status">
         <strong>40 years old</strong><br>
         1 month in Kuwait<br>
@@ -296,7 +291,7 @@
     </div>
     <!-- Candidate 11 -->
     <div class="item-card">
-      <img src="https://imgur.com/yvG7PDk.jpg" alt="Nepal Candidate 11" class="item-image">
+      <img src="https://i.imgur.com/yvG7PDk.jpg" alt="Nepal Candidate 11" class="item-image">
       <p id="np11-status">
         <strong>25 years old</strong><br>
         4 months in Kuwait<br>
@@ -307,14 +302,14 @@
       <button id="np11-button" class="reserve-button" onclick="reserveItem('np11')">Reserve</button>
     </div>
   </div>
-
+  
   <!-- Section 3: India Candidates -->
   <div id="section3" class="section">
     <div class="back-button" onclick="goHome()">← Back</div>
     <h2>India Candidates</h2>
     <!-- Candidate 1 -->
     <div class="item-card">
-      <img src="https://imgur.com/pJdIWbP.jpg" alt="India Candidate 1" class="item-image">
+      <img src="https://i.imgur.com/pJdIWbP.jpg" alt="India Candidate 1" class="item-image">
       <p id="in1-status">
         <strong>29 years old</strong><br>
         4 months in Kuwait<br>
@@ -325,7 +320,7 @@
     </div>
     <!-- Candidate 2 -->
     <div class="item-card">
-      <img src="https://imgur.com/e8ydY62.jpg" alt="India Candidate 2" class="item-image">
+      <img src="https://i.imgur.com/e8ydY62.jpg" alt="India Candidate 2" class="item-image">
       <p id="in2-status">
         <strong>48 years old</strong><br>
         2 months in Kuwait<br>
@@ -336,7 +331,7 @@
     </div>
     <!-- Candidate 3 -->
     <div class="item-card">
-      <img src="https://imgur.com/fWYVcsh.jpg" alt="India Candidate 3" class="item-image">
+      <img src="https://i.imgur.com/fWYVcsh.jpg" alt="India Candidate 3" class="item-image">
       <p id="in3-status">
         <strong>30 years old</strong><br>
         2 months in Kuwait<br>
@@ -347,28 +342,28 @@
       <button id="in3-button" class="reserve-button" onclick="reserveItem('in3')">Reserve</button>
     </div>
   </div>
-
+  
   <!-- Section 4: Africa (Empty Section) -->
   <div id="section4" class="section">
     <div class="back-button" onclick="goHome()">← Back</div>
     <h2>Africa</h2>
     <p>No candidates available in the Africa section.</p>
   </div>
-
+  
   <!-- Section 5: Philippines (Empty Section) -->
   <div id="section5" class="section">
     <div class="back-button" onclick="goHome()">← Back</div>
     <h2>Philippines</h2>
     <p>No candidates available in the Philippines section.</p>
   </div>
-
-  <!-- Firebase & Navigation Script -->
+  
+  <!-- Firebase & Navigation Scripts -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-app.js";
-    import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-firestore.js";
+    import { getFirestore, doc, setDoc, getDocs, collection } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-firestore.js";
     import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-analytics.js";
     
-    // Firebase configuration details
+    // Firebase configuration using your details
     const firebaseConfig = {
       apiKey: "AIzaSyBa2i6Dv-Wi5KAUe91DeNL5U9L--HZkni0",
       authDomain: "fursatkum-792e8.firebaseapp.com",
@@ -383,7 +378,7 @@
     const analytics = getAnalytics(app);
     const db = getFirestore(app);
     
-    // Open a section and hide others
+    // Function to open a section
     window.openSection = function(sectionId) {
       document.getElementById('home').style.display = 'none';
       const sections = document.getElementsByClassName('section');
@@ -391,9 +386,11 @@
         sec.style.display = 'none';
       }
       document.getElementById(sectionId).style.display = 'block';
+      // After opening a section, check reservations from Firebase to update UI
+      updateReservations();
     };
     
-    // Return to homepage
+    // Function to go back to homepage
     window.goHome = function() {
       const sections = document.getElementsByClassName('section');
       for (let sec of sections) {
@@ -402,24 +399,54 @@
       document.getElementById('home').style.display = 'block';
     };
     
-    // Reserve a candidate: update Firestore, then update UI (set status to reserved in red and remove the button)
+    // Function to reserve a candidate; on successful reservation, update UI:
+    // Set status to "[Reserved]" in red and hide the reserve button.
     window.reserveItem = async function(itemId) {
       try {
         await setDoc(doc(db, "reservations", itemId), { reserved: true });
-        const statusEl = document.getElementById(itemId + '-status');
-        statusEl.innerText = "[Reserved]";
-        statusEl.style.color = "red";
-        const btn = document.getElementById(itemId + '-button');
-        btn.style.display = "none";
+        // Update UI for the candidate:
+        const statusEl = document.getElementById(itemId + "-status");
+        const buttonEl = document.getElementById(itemId + "-button");
+        if (statusEl) {
+          statusEl.innerText = "[Reserved]";
+          statusEl.style.color = "red";
+        }
+        if (buttonEl) {
+          buttonEl.style.display = "none";
+        }
       } catch (error) {
         alert("Error reserving candidate " + itemId);
         console.error("Error reserving candidate:", error);
       }
     };
     
-    // Show homepage initially
+    // Function to update reservation status from Firestore on page load or section open.
+    async function updateReservations() {
+      try {
+        const querySnapshot = await getDocs(collection(db, "reservations"));
+        querySnapshot.forEach((docSnap) => {
+          if (docSnap.data().reserved === true) {
+            const itemId = docSnap.id;
+            const statusEl = document.getElementById(itemId + "-status");
+            const buttonEl = document.getElementById(itemId + "-button");
+            if (statusEl) {
+              statusEl.innerText = "[Reserved]";
+              statusEl.style.color = "red";
+            }
+            if (buttonEl) {
+              buttonEl.style.display = "none";
+            }
+          }
+        });
+      } catch (error) {
+        console.error("Error updating reservations:", error);
+      }
+    }
+    
+    // On initial load, show the homepage
     document.addEventListener("DOMContentLoaded", () => {
-      document.getElementById('home').style.display = 'block';
+      document.getElementById("home").style.display = "block";
+      updateReservations();
     });
   </script>
 </body>
