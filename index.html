@@ -7,7 +7,7 @@
   <!-- Google Font for a modern look -->
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet" />
   <style>
-    /* --- Global Styles --- */
+    /* Global Styles */
     body {
       font-family: 'Roboto', sans-serif;
       margin: 0;
@@ -16,11 +16,12 @@
       text-align: center;
       color: #333;
     }
+    
     h1, h2 {
       margin: 20px 0;
     }
     
-    /* --- Homepage Section Items --- */
+    /* Homepage – Section Items */
     .section-item {
       display: inline-block;
       margin: 20px;
@@ -32,6 +33,7 @@
       font-size: 18px;
       font-weight: 500;
     }
+    /* Circle with flag background */
     .section-circle {
       width: 150px;
       height: 150px;
@@ -46,7 +48,7 @@
       box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
     }
     
-    /* --- Sections (Pages) --- */
+    /* Sections (pages) – hidden by default */
     .section {
       display: none;
       padding: 30px;
@@ -60,7 +62,7 @@
       text-decoration: underline;
     }
     
-    /* --- Candidate Card Style --- */
+    /* Candidate Card Style */
     .item-card {
       background: #fff;
       margin: 15px auto;
@@ -72,7 +74,7 @@
       text-align: left;
     }
     
-    /* Fixed square candidate image */
+    /* Fixed 200×200 candidate image with border */
     .item-image {
       width: 200px;
       height: 200px;
@@ -82,10 +84,12 @@
       display: block;
       margin: 0 auto;
     }
+    
     .status {
       margin-top: 10px;
       font-weight: 700;
     }
+    
     .reserve-button {
       margin-top: 10px;
       padding: 10px;
@@ -108,7 +112,7 @@
     
     @keyframes fadeIn {
       from { opacity: 0; }
-      to { opacity: 1; }
+      to   { opacity: 1; }
     }
   </style>
 </head>
@@ -116,27 +120,27 @@
   <!-- Homepage: Five Sections -->
   <div id="home">
     <h1>Welcome to Our Candidate Reservation Site</h1>
-    <!-- Section 1: Sri Lanka -->
+    <!-- Sri Lanka -->
     <div class="section-item" onclick="openSection('section1')">
       <div class="section-circle" style="background-image: url('https://flagcdn.com/w320/lk.png');"></div>
       <div class="section-label">Sri Lanka</div>
     </div>
-    <!-- Section 2: Nepal -->
+    <!-- Nepal -->
     <div class="section-item" onclick="openSection('section2')">
       <div class="section-circle" style="background-image: url('https://flagcdn.com/w320/np.png');"></div>
       <div class="section-label">Nepal</div>
     </div>
-    <!-- Section 3: India -->
+    <!-- India -->
     <div class="section-item" onclick="openSection('section3')">
       <div class="section-circle" style="background-image: url('https://flagcdn.com/w320/in.png');"></div>
       <div class="section-label">India</div>
     </div>
-    <!-- Section 4: Africa (Empty) -->
+    <!-- Africa (Empty) -->
     <div class="section-item" onclick="openSection('section4')">
       <div class="section-circle" style="background-image: url('https://flagcdn.com/w320/za.png');"></div>
       <div class="section-label">Africa</div>
     </div>
-    <!-- Section 5: Philippines (Empty) -->
+    <!-- Philippines (Empty) -->
     <div class="section-item" onclick="openSection('section5')">
       <div class="section-circle" style="background-image: url('https://flagcdn.com/w320/ph.png');"></div>
       <div class="section-label">Philippines</div>
@@ -147,26 +151,26 @@
   <div id="section1" class="section">
     <div class="back-button" onclick="goHome()">← Back</div>
     <h2>Sri Lanka Candidates</h2>
-    <!-- Candidate 1 -->
+    <!-- Candidate sl1 -->
     <div class="item-card">
-      <img src="https://i.imgur.com/SHfuTe6.jpg" alt="Sri Lanka Candidate 1" class="item-image">
+      <img src="https://imgur.com/SHfuTe6.jpg" alt="Sri Lanka Candidate 1" class="item-image">
       <p id="sl1-status">
         <strong>29 years old</strong><br>
         1 yr &amp; 2 months in Kuwait<br>
         Arabic/English<br>
-        Cleaning, Ironing, Washing
+        Cleaning, ironing, washing
       </p>
       <button id="sl1-button" class="reserve-button" onclick="reserveItem('sl1')">Reserve</button>
     </div>
-    <!-- Candidate 2 -->
+    <!-- Candidate sl2 -->
     <div class="item-card">
-      <img src="https://i.imgur.com/LKyJDsj.jpg" alt="Sri Lanka Candidate 2" class="item-image">
+      <img src="https://imgur.com/LKyJDsj.jpg" alt="Sri Lanka Candidate 2" class="item-image">
       <p id="sl2-status">
         <strong>57 years old</strong><br>
         1 month in Kuwait<br>
         Arabic/English<br>
         With experience in Lebanon, Oman, Dubai<br>
-        Cleaning, Ironing, Washing
+        Cleaning, ironing, washing
       </p>
       <button id="sl2-button" class="reserve-button" onclick="reserveItem('sl2')">Reserve</button>
     </div>
@@ -176,64 +180,71 @@
   <div id="section2" class="section">
     <div class="back-button" onclick="goHome()">← Back</div>
     <h2>Nepal Candidates</h2>
-    <!-- Candidate 1 -->
+    <!-- Candidate np1 -->
     <div class="item-card">
       <img src="https://i.imgur.com/lqsMEmG.jpg" alt="Nepal Candidate 1" class="item-image">
       <p id="np1-status">
         <strong>30 years old</strong><br>
         3 months in Kuwait<br>
         Arabic<br>
-        Cleaning, Babysitter
+        Cleaning<br>
+        Babysitter
       </p>
       <button id="np1-button" class="reserve-button" onclick="reserveItem('np1')">Reserve</button>
     </div>
-    <!-- Candidate 2 -->
+    <!-- Candidate np2 -->
     <div class="item-card">
       <img src="https://i.imgur.com/6POnjb7.jpg" alt="Nepal Candidate 2" class="item-image">
       <p id="np2-status">
         <strong>37 years old</strong><br>
         20 days in Kuwait<br>
         No Arabic, No English<br>
-        Cleaning, Babysitter, Ironing
+        Cleaning<br>
+        Baby sitter<br>
+        Ironing
       </p>
       <button id="np2-button" class="reserve-button" onclick="reserveItem('np2')">Reserve</button>
     </div>
-    <!-- Candidate 3 -->
+    <!-- Candidate np3 -->
     <div class="item-card">
       <img src="https://i.imgur.com/YN5PNec.jpg" alt="Nepal Candidate 3" class="item-image">
       <p id="np3-status">
         <strong>23 years old</strong><br>
         6 months in Kuwait<br>
         Arabic<br>
-        Cleaning, Cook, Babysitter
+        Cleaning<br>
+        Cook<br>
+        Babysitter
       </p>
       <button id="np3-button" class="reserve-button" onclick="reserveItem('np3')">Reserve</button>
     </div>
-    <!-- Candidate 4 -->
+    <!-- Candidate np4 -->
     <div class="item-card">
-      <img src="https://i.imgur.com/3MZgKOn.jpg" alt="Nepal Candidate 4" class="item-image">
+      <img src="https://imgur.com/3MZgKOn.jpg" alt="Nepal Candidate 4" class="item-image">
       <p id="np4-status">
         <strong>46 years old</strong><br>
         20 days in Kuwait<br>
         No Arabic, No English<br>
-        Cleaning, Babysitter
+        Cleaning<br>
+        Baby sitter
       </p>
       <button id="np4-button" class="reserve-button" onclick="reserveItem('np4')">Reserve</button>
     </div>
-    <!-- Candidate 5 -->
+    <!-- Candidate np5 -->
     <div class="item-card">
-      <img src="https://i.imgur.com/RGVDWyv.jpg" alt="Nepal Candidate 5" class="item-image">
+      <img src="https://imgur.com/RGVDWyv.jpg" alt="Nepal Candidate 5" class="item-image">
       <p id="np5-status">
         <strong>31 years old</strong><br>
         1 month in Kuwait<br>
         No Arabic, No English<br>
-        Cleaning, Babysitter
+        Cleaning<br>
+        Babysitter
       </p>
       <button id="np5-button" class="reserve-button" onclick="reserveItem('np5')">Reserve</button>
     </div>
-    <!-- Candidate 6 -->
+    <!-- Candidate np6 -->
     <div class="item-card">
-      <img src="https://i.imgur.com/YXiDV7A.jpg" alt="Nepal Candidate 6" class="item-image">
+      <img src="https://imgur.com/YXiDV7A.jpg" alt="Nepal Candidate 6" class="item-image">
       <p id="np6-status">
         <strong>29 years old</strong><br>
         4 days in Kuwait<br>
@@ -243,9 +254,9 @@
       </p>
       <button id="np6-button" class="reserve-button" onclick="reserveItem('np6')">Reserve</button>
     </div>
-    <!-- Candidate 7 -->
+    <!-- Candidate np7 -->
     <div class="item-card">
-      <img src="https://i.imgur.com/r38bnvQ.jpg" alt="Nepal Candidate 7" class="item-image">
+      <img src="https://imgur.com/r38bnvQ.jpg" alt="Nepal Candidate 7" class="item-image">
       <p id="np7-status">
         <strong>36 years old</strong><br>
         4 days in Kuwait<br>
@@ -256,42 +267,42 @@
       </p>
       <button id="np7-button" class="reserve-button" onclick="reserveItem('np7')">Reserve</button>
     </div>
-    <!-- Candidate 8 -->
+    <!-- Candidate np8 -->
     <div class="item-card">
-      <img src="https://i.imgur.com/frcZXWG.jpg" alt="Nepal Candidate 8" class="item-image">
+      <img src="https://imgur.com/frcZXWG.jpg" alt="Nepal Candidate 8" class="item-image">
       <p id="np8-status">
         <strong>39 years old</strong><br>
         5 months in Kuwait<br>
         Arabic<br>
-        Cook, Cleaning, Babysitter
+        Cook, Cleaning, Baby sitter
       </p>
       <button id="np8-button" class="reserve-button" onclick="reserveItem('np8')">Reserve</button>
     </div>
-    <!-- Candidate 9 -->
+    <!-- Candidate np9 -->
     <div class="item-card">
-      <img src="https://i.imgur.com/UB8jMUZ.jpg" alt="Nepal Candidate 9" class="item-image">
+      <img src="https://imgur.com/UB8jMUZ.jpg" alt="Nepal Candidate 9" class="item-image">
       <p id="np9-status">
         <strong>40 years old</strong><br>
         2 months in Kuwait<br>
         Arabic<br>
-        Cleaning/Ironing/Washing
+        Cleaning, ironing, washing
       </p>
       <button id="np9-button" class="reserve-button" onclick="reserveItem('np9')">Reserve</button>
     </div>
-    <!-- Candidate 10 -->
+    <!-- Candidate np10 -->
     <div class="item-card">
-      <img src="https://i.imgur.com/uIYAt6u.jpg" alt="Nepal Candidate 10" class="item-image">
+      <img src="https://imgur.com/uIYAt6u.jpg" alt="Nepal Candidate 10" class="item-image">
       <p id="np10-status">
         <strong>40 years old</strong><br>
         1 month in Kuwait<br>
         No Arabic, No English<br>
-        Cleaning, Babysitter
+        Cleaning, Baby sitter
       </p>
       <button id="np10-button" class="reserve-button" onclick="reserveItem('np10')">Reserve</button>
     </div>
-    <!-- Candidate 11 -->
+    <!-- Candidate np11 -->
     <div class="item-card">
-      <img src="https://i.imgur.com/yvG7PDk.jpg" alt="Nepal Candidate 11" class="item-image">
+      <img src="https://imgur.com/yvG7PDk.jpg" alt="Nepal Candidate 11" class="item-image">
       <p id="np11-status">
         <strong>25 years old</strong><br>
         4 months in Kuwait<br>
@@ -301,56 +312,80 @@
       </p>
       <button id="np11-button" class="reserve-button" onclick="reserveItem('np11')">Reserve</button>
     </div>
+    <!-- Candidate np12 -->
+    <div class="item-card">
+      <img src="https://imgur.com/t9c8cLX.jpg" alt="Nepal Candidate 12" class="item-image">
+      <p id="np12-status">
+        <strong>27 years old</strong><br>
+        2 months in Kuwait<br>
+        Arabic<br>
+        Cleaning, Babysitter, ironing<br>
+        Secretary: Nazim in Farwaniya
+      </p>
+      <button id="np12-button" class="reserve-button" onclick="reserveItem('np12')">Reserve</button>
+    </div>
+    <!-- Candidate np13 -->
+    <div class="item-card">
+      <img src="https://imgur.com/JU01aeX.jpg" alt="Nepal Candidate 13" class="item-image">
+      <p id="np13-status">
+        <strong>Nepali, 46 years old</strong><br>
+        2 months in Kuwait<br>
+        No Arabic<br>
+        Cleaning, Babysitter<br>
+        Ironing, washing
+      </p>
+      <button id="np13-button" class="reserve-button" onclick="reserveItem('np13')">Reserve</button>
+    </div>
   </div>
   
   <!-- Section 3: India Candidates -->
   <div id="section3" class="section">
     <div class="back-button" onclick="goHome()">← Back</div>
     <h2>India Candidates</h2>
-    <!-- Candidate 1 -->
+    <!-- Candidate in1 -->
     <div class="item-card">
-      <img src="https://i.imgur.com/pJdIWbP.jpg" alt="India Candidate 1" class="item-image">
+      <img src="https://imgur.com/pJdIWbP.jpg" alt="India Candidate 1" class="item-image">
       <p id="in1-status">
         <strong>29 years old</strong><br>
         4 months in Kuwait<br>
         Arabic<br>
-        Cleaning / Babysitter
+        Cleaning, Babysitter
       </p>
       <button id="in1-button" class="reserve-button" onclick="reserveItem('in1')">Reserve</button>
     </div>
-    <!-- Candidate 2 -->
+    <!-- Candidate in2 -->
     <div class="item-card">
-      <img src="https://i.imgur.com/e8ydY62.jpg" alt="India Candidate 2" class="item-image">
+      <img src="https://imgur.com/e8ydY62.jpg" alt="India Candidate 2" class="item-image">
       <p id="in2-status">
         <strong>48 years old</strong><br>
         2 months in Kuwait<br>
         No Arabic, No English<br>
-        Cleaning / Babysitter
+        Cleaning, Babysitter
       </p>
       <button id="in2-button" class="reserve-button" onclick="reserveItem('in2')">Reserve</button>
     </div>
-    <!-- Candidate 3 -->
+    <!-- Candidate in3 -->
     <div class="item-card">
-      <img src="https://i.imgur.com/fWYVcsh.jpg" alt="India Candidate 3" class="item-image">
+      <img src="https://imgur.com/fWYVcsh.jpg" alt="India Candidate 3" class="item-image">
       <p id="in3-status">
         <strong>30 years old</strong><br>
         2 months in Kuwait<br>
         With experience<br>
         English<br>
-        Babysitter / Cleaning
+        Babysitter, Cleaning
       </p>
       <button id="in3-button" class="reserve-button" onclick="reserveItem('in3')">Reserve</button>
     </div>
   </div>
   
-  <!-- Section 4: Africa (Empty Section) -->
+  <!-- Section 4: Africa (Empty) -->
   <div id="section4" class="section">
     <div class="back-button" onclick="goHome()">← Back</div>
     <h2>Africa</h2>
     <p>No candidates available in the Africa section.</p>
   </div>
   
-  <!-- Section 5: Philippines (Empty Section) -->
+  <!-- Section 5: Philippines (Empty) -->
   <div id="section5" class="section">
     <div class="back-button" onclick="goHome()">← Back</div>
     <h2>Philippines</h2>
@@ -363,7 +398,7 @@
     import { getFirestore, doc, setDoc, getDocs, collection } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-firestore.js";
     import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-analytics.js";
     
-    // Firebase configuration using your details
+    // Firebase configuration details
     const firebaseConfig = {
       apiKey: "AIzaSyBa2i6Dv-Wi5KAUe91DeNL5U9L--HZkni0",
       authDomain: "fursatkum-792e8.firebaseapp.com",
@@ -378,7 +413,7 @@
     const analytics = getAnalytics(app);
     const db = getFirestore(app);
     
-    // Function to open a section
+    // Function: Open a section and update reservations from Firebase
     window.openSection = function(sectionId) {
       document.getElementById('home').style.display = 'none';
       const sections = document.getElementsByClassName('section');
@@ -386,11 +421,10 @@
         sec.style.display = 'none';
       }
       document.getElementById(sectionId).style.display = 'block';
-      // After opening a section, check reservations from Firebase to update UI
       updateReservations();
     };
     
-    // Function to go back to homepage
+    // Function: Go back to homepage
     window.goHome = function() {
       const sections = document.getElementsByClassName('section');
       for (let sec of sections) {
@@ -399,12 +433,12 @@
       document.getElementById('home').style.display = 'block';
     };
     
-    // Function to reserve a candidate; on successful reservation, update UI:
-    // Set status to "[Reserved]" in red and hide the reserve button.
+    // Function: Reserve a candidate in Firestore then update the UI  
+    // (Status text becomes "[Reserved]" in red and the Reserve button is hidden)
     window.reserveItem = async function(itemId) {
       try {
         await setDoc(doc(db, "reservations", itemId), { reserved: true });
-        // Update UI for the candidate:
+        // Update UI if reservation is successful
         const statusEl = document.getElementById(itemId + "-status");
         const buttonEl = document.getElementById(itemId + "-button");
         if (statusEl) {
@@ -420,7 +454,7 @@
       }
     };
     
-    // Function to update reservation status from Firestore on page load or section open.
+    // Function: Update UI based on Firestore reservations
     async function updateReservations() {
       try {
         const querySnapshot = await getDocs(collection(db, "reservations"));
@@ -443,7 +477,6 @@
       }
     }
     
-    // On initial load, show the homepage
     document.addEventListener("DOMContentLoaded", () => {
       document.getElementById("home").style.display = "block";
       updateReservations();
