@@ -1,23 +1,31 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Video Uploader</title>
-    <link rel="stylesheet" href="styles.css" />
-  </head>
-  <body>
-    <div class="container">
-      <!-- Circular video player section -->
-      <div class="circle video-section">
-        <video id="videoPlayer" controls autoplay></video>
-      </div>
-      <!-- Controls: File input and upload button -->
-      <div class="controls">
-        <input type="file" id="videoInput" accept="video/*" multiple />
-        <button onclick="uploadVideos()">Add Videos</button>
-      </div>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Video Slideshow Website</title>
+  <link rel="stylesheet" href="styles.css">
+  <!-- Include the Supabase client library from a CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+  <div class="container">
+    <div class="circle video-section">
+      <video id="videoPlayer" controls autoplay></video>
     </div>
-    <script src="script.js"></script>
-  </body>
-</html>
+    <div class="controls">
+      <input type="file" id="videoInput" accept="video/*" multiple>
+      <button onclick="uploadVideos()">Add Videos</button>
+      <button onclick="skipPrevious()">⏪ Previous</button>
+      <button onclick="skipNext()">⏩ Next</button>
+      <button onclick="toggleMediaManagement()">📂 Media Management</button>
+    </div>
+  </div>
+
+  <div id="mediaManagement" class="hidden">
+    <h3>Media Management (Drag to Rearrange)</h3>
+    <div id="videoList"></div>
+    <button onclick="toggleMediaManagement()">❌ Close</button>
+  </div>
+  <script src="script.js"></script>
+</body>
