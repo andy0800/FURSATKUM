@@ -12,18 +12,20 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = firebase.initializeApp(firebaseConfig);
 const storage = firebase.storage();
+const firestore = firebase.firestore();
+const videosCollection = firestore.collection("videos");
 
-// Retrieve persisted video data or initialize new arrays
-let videoQueue = JSON.parse(localStorage.getItem("videos")) || [];
-let videoNames = JSON.parse(localStorage.getItem("videoNames")) || [];
+// Maintain a central video queue (populated from Firestore)
+let videoQueue = [];
+let videoNames = [];
 
 const videoPlayer = document.getElementById("videoPlayer");
 const videoList = document.getElementById("videoList");
 
 /**
  * uploadVideos()
- * Iterates over selected files, uploads each to Firebase Storage in the "videos" directory,
- * retrieves its download URL, and updates localStorage along with the UI.
+ * Iterates over selected files, uploads each to Firebase Storage in the "videos" folder,
+ * retrieves its download URL, and then saves the metadata (URL, file name) in Firestore.
  */
 function uploadVideos() {
   const videoInput = document.getElementById("videoInput");
@@ -37,12 +39,23 @@ function uploadVideos() {
         .then(snapshot => snapshot.ref.getDownloadURL())
         .then(downloadURL => {
           console.log("Video Uploaded:", downloadURL);
-          videoQueue.push(downloadURL);
-          videoNames.push(file.name);
-          localStorage.setItem("videos", JSON.stringify(videoQueue));
-          localStorage.setItem("videoNames", JSON.stringify(videoNames));
-          updateVideoList();
-          if (videoQueue.length === 1) playNextVideo();
+          // Save metadata to Firestore
+          videosCollection.add({
+            url: downloadURL,
+            name: file.name,
+            uploadedAt: firebase.firestore.FieldValue.serverTimestamp()
+          }).then(() => {
+            console.log("Metadata saved to Firestore.");
+            // Optionally update local queue after a successful Firestore write.
+            videoQueue.push(downloadURL);
+            videoNames.push(file.name);
+            updateVideoList();
+            if (videoQueue.length === 1) {
+              playNextVideo();
+            }
+          }).catch(error => {
+            console.error("Error saving metadata to Firestore:", error);
+          });
         })
         .catch(error => {
           console.error("Upload error:", error);
@@ -53,8 +66,7 @@ function uploadVideos() {
 
 /**
  * playNextVideo()
- * Plays the first video in the queue. When the video ends, cycles it to the back,
- * then plays the next video.
+ * Plays the first video in the queue, then cycles the video to the back when it ends.
  */
 function playNextVideo() {
   if (videoQueue.length > 0) {
@@ -70,7 +82,7 @@ function playNextVideo() {
 
 /**
  * skipNext()
- * Moves the current video to the end of the queue and starts playback of the next video.
+ * Moves the current video to the end of the queue and begins playback of the next.
  */
 function skipNext() {
   if (videoQueue.length > 0) {
@@ -82,7 +94,7 @@ function skipNext() {
 
 /**
  * skipPrevious()
- * Retrieves the last video in the queue and starts its playback.
+ * Retrieves the last video in the queue and plays it.
  */
 function skipPrevious() {
   if (videoQueue.length > 0) {
@@ -94,13 +106,12 @@ function skipPrevious() {
 
 /**
  * removeVideo(index)
- * Removes the video at the specified index from the queue, updates localStorage and the UI.
+ * Removes the selected video from the queue, updates Firestore (if desired), and refreshes the UI.
+ * (Note: In a full implementation you’d also remove it from Firestore.)
  */
 function removeVideo(index) {
   videoQueue.splice(index, 1);
   videoNames.splice(index, 1);
-  localStorage.setItem("videos", JSON.stringify(videoQueue));
-  localStorage.setItem("videoNames", JSON.stringify(videoNames));
   updateVideoList();
   if (videoQueue.length > 0) playNextVideo();
 }
@@ -116,8 +127,7 @@ function toggleMediaManagement() {
 
 /**
  * updateVideoList()
- * Refreshes the list of videos displayed in the Media Management panel,
- * and sets up drag-and-drop for reordering.
+ * Refreshes the Media Management list and sets up drag-and-drop for reordering.
  */
 function updateVideoList() {
   videoList.innerHTML = "";
@@ -130,18 +140,16 @@ function updateVideoList() {
       <span>${videoNames[index]}</span>
       <button onclick="removeVideo(${index})">🗑️ Delete</button>
     `;
-
     listItem.addEventListener("dragstart", (event) => {
       event.dataTransfer.setData("text/plain", index);
     });
-
     videoList.appendChild(listItem);
   });
-
+  
   videoList.addEventListener("dragover", (event) => {
     event.preventDefault();
   });
-
+  
   videoList.addEventListener("drop", (event) => {
     event.preventDefault();
     let draggedIndex = event.dataTransfer.getData("text/plain");
@@ -155,31 +163,45 @@ function updateVideoList() {
       videoNames.splice(draggedIndex, 1);
       videoQueue.splice(droppedIndex, 0, tempVideo);
       videoNames.splice(droppedIndex, 0, tempName);
-      localStorage.setItem("videos", JSON.stringify(videoQueue));
-      localStorage.setItem("videoNames", JSON.stringify(videoNames));
       updateVideoList();
     }
   });
 }
 
-// On page load, update the video list, start playback if videos exist,
-// and attempt to request fullscreen for the video container.
+// On page load, query Firestore for the video metadata and rebuild the queue.
+// This makes the video list globally available across devices.
 window.onload = () => {
-  if (videoQueue.length > 0) {
-    updateVideoList();
-    playNextVideo();
-    let videoContainer = document.querySelector(".circle");
-    if (videoContainer.requestFullscreen) {
-      videoContainer.requestFullscreen();
-    } else if (videoContainer.webkitRequestFullscreen) {
-      videoContainer.webkitRequestFullscreen();
-    } else if (videoContainer.msRequestFullscreen) {
-      videoContainer.msRequestFullscreen();
-    }
+  // Query videos ordered by upload time
+  videosCollection.orderBy('uploadedAt').get()
+    .then(snapshot => {
+      videoQueue = [];
+      videoNames = [];
+      snapshot.forEach(doc => {
+        const data = doc.data();
+        videoQueue.push(data.url);
+        videoNames.push(data.name);
+      });
+      updateVideoList();
+      if (videoQueue.length > 0) {
+        playNextVideo();
+      }
+    })
+    .catch(error => {
+      console.error("Error loading videos from Firestore:", error);
+    });
+  
+  // Request fullscreen for the video container
+  let videoContainer = document.querySelector(".circle");
+  if (videoContainer.requestFullscreen) {
+    videoContainer.requestFullscreen();
+  } else if (videoContainer.webkitRequestFullscreen) { // Safari compatibility
+    videoContainer.webkitRequestFullscreen();
+  } else if (videoContainer.msRequestFullscreen) { // Edge compatibility
+    videoContainer.msRequestFullscreen();
   }
 };
 
-// Expose functions to the global scope so that inline onclick handlers work.
+// Expose functions globally so inline onclick handlers work
 window.uploadVideos = uploadVideos;
 window.skipNext = skipNext;
 window.skipPrevious = skipPrevious;
