@@ -13,7 +13,7 @@ const firebaseConfig = {
 const app = firebase.initializeApp(firebaseConfig);
 const storage = firebase.storage();
 
-// Retrieve persisted video data or initialize
+// Retrieve persisted video data or initialize new arrays
 let videoQueue = JSON.parse(localStorage.getItem("videos")) || [];
 let videoNames = JSON.parse(localStorage.getItem("videoNames")) || [];
 
@@ -21,9 +21,9 @@ const videoPlayer = document.getElementById("videoPlayer");
 const videoList = document.getElementById("videoList");
 
 /**
- * Iterates over selected files, uploads each to Firebase Storage
- * under the "videos" directory, fetches the download URL,
- * and updates localStorage and the UI.
+ * uploadVideos()
+ * Iterates over selected files, uploads each to Firebase Storage in the "videos" directory,
+ * retrieves its download URL, and updates localStorage along with the UI.
  */
 function uploadVideos() {
   const videoInput = document.getElementById("videoInput");
@@ -52,8 +52,9 @@ function uploadVideos() {
 }
 
 /**
- * Plays the first video in the queue.
- * After a video ends, it cycles to the back.
+ * playNextVideo()
+ * Plays the first video in the queue. When the video ends, cycles it to the back,
+ * then plays the next video.
  */
 function playNextVideo() {
   if (videoQueue.length > 0) {
@@ -68,7 +69,8 @@ function playNextVideo() {
 }
 
 /**
- * Shifts the first video to the end and plays the next.
+ * skipNext()
+ * Moves the current video to the end of the queue and starts playback of the next video.
  */
 function skipNext() {
   if (videoQueue.length > 0) {
@@ -79,7 +81,8 @@ function skipNext() {
 }
 
 /**
- * Retrieves the last video in the queue and plays it.
+ * skipPrevious()
+ * Retrieves the last video in the queue and starts its playback.
  */
 function skipPrevious() {
   if (videoQueue.length > 0) {
@@ -90,7 +93,8 @@ function skipPrevious() {
 }
 
 /**
- * Removes the selected video from the queue and updates the UI.
+ * removeVideo(index)
+ * Removes the video at the specified index from the queue, updates localStorage and the UI.
  */
 function removeVideo(index) {
   videoQueue.splice(index, 1);
@@ -102,6 +106,7 @@ function removeVideo(index) {
 }
 
 /**
+ * toggleMediaManagement()
  * Toggles the visibility of the Media Management panel.
  */
 function toggleMediaManagement() {
@@ -110,7 +115,9 @@ function toggleMediaManagement() {
 }
 
 /**
- * Refreshes the Media Management list and enables drag-and-drop.
+ * updateVideoList()
+ * Refreshes the list of videos displayed in the Media Management panel,
+ * and sets up drag-and-drop for reordering.
  */
 function updateVideoList() {
   videoList.innerHTML = "";
@@ -155,7 +162,8 @@ function updateVideoList() {
   });
 }
 
-// On load, update list and start playback (if videos exist), and request fullscreen.
+// On page load, update the video list, start playback if videos exist,
+// and attempt to request fullscreen for the video container.
 window.onload = () => {
   if (videoQueue.length > 0) {
     updateVideoList();
@@ -171,7 +179,7 @@ window.onload = () => {
   }
 };
 
-// Expose functions to global scope so inline onclick handlers work.
+// Expose functions to the global scope so that inline onclick handlers work.
 window.uploadVideos = uploadVideos;
 window.skipNext = skipNext;
 window.skipPrevious = skipPrevious;
