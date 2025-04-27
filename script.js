@@ -1,4 +1,4 @@
-// Replace with your Firebase project configuration
+// Firebase configuration with your data
 const firebaseConfig = {
   apiKey: "AIzaSyCxs2dqhkoTrsUfZtqxH2EhZD7MqclNGf0",
   authDomain: "fursatkum-videos.firebaseapp.com",
@@ -13,7 +13,7 @@ const firebaseConfig = {
 const app = firebase.initializeApp(firebaseConfig);
 const storage = firebase.storage();
 
-// Retrieve or initialize the video queue arrays from localStorage
+// Retrieve persisted video data or initialize
 let videoQueue = JSON.parse(localStorage.getItem("videos")) || [];
 let videoNames = JSON.parse(localStorage.getItem("videoNames")) || [];
 
@@ -21,24 +21,20 @@ const videoPlayer = document.getElementById("videoPlayer");
 const videoList = document.getElementById("videoList");
 
 /**
- * uploadVideos() iterates over the selected files,
- * uploads each to Firebase Storage under the "videos" folder,
- * retrieves its download URL, then updates the local queue and UI.
+ * Iterates over selected files, uploads each to Firebase Storage
+ * under the "videos" directory, fetches the download URL,
+ * and updates localStorage and the UI.
  */
 function uploadVideos() {
   const videoInput = document.getElementById("videoInput");
   if (videoInput.files.length > 0) {
     Array.from(videoInput.files).forEach(file => {
-      // Generate a unique filename to avoid collisions with existing files.
+      console.log("Uploading file:", file.name);
       const fileName = `${Date.now()}-${file.name}`;
-      // Create a reference to "videos/<fileName>" in Firebase Storage.
       const storageRef = storage.ref('videos/' + fileName);
       
-      // Upload the file.
       storageRef.put(file)
-        .then(snapshot => {
-          return snapshot.ref.getDownloadURL();
-        })
+        .then(snapshot => snapshot.ref.getDownloadURL())
         .then(downloadURL => {
           console.log("Video Uploaded:", downloadURL);
           videoQueue.push(downloadURL);
@@ -46,9 +42,7 @@ function uploadVideos() {
           localStorage.setItem("videos", JSON.stringify(videoQueue));
           localStorage.setItem("videoNames", JSON.stringify(videoNames));
           updateVideoList();
-          if (videoQueue.length === 1) {
-            playNextVideo();
-          }
+          if (videoQueue.length === 1) playNextVideo();
         })
         .catch(error => {
           console.error("Upload error:", error);
@@ -58,8 +52,8 @@ function uploadVideos() {
 }
 
 /**
- * playNextVideo() plays the first video in the queue.
- * When the video ends, it cycles that video to the back of the queue.
+ * Plays the first video in the queue.
+ * After a video ends, it cycles to the back.
  */
 function playNextVideo() {
   if (videoQueue.length > 0) {
@@ -74,7 +68,7 @@ function playNextVideo() {
 }
 
 /**
- * skipNext() shifts the first video to the end of the queue and plays the next video.
+ * Shifts the first video to the end and plays the next.
  */
 function skipNext() {
   if (videoQueue.length > 0) {
@@ -85,7 +79,7 @@ function skipNext() {
 }
 
 /**
- * skipPrevious() retrieves the last video in the queue and plays it.
+ * Retrieves the last video in the queue and plays it.
  */
 function skipPrevious() {
   if (videoQueue.length > 0) {
@@ -96,7 +90,7 @@ function skipPrevious() {
 }
 
 /**
- * removeVideo() removes a video from the queue, updates localStorage and the UI.
+ * Removes the selected video from the queue and updates the UI.
  */
 function removeVideo(index) {
   videoQueue.splice(index, 1);
@@ -108,15 +102,15 @@ function removeVideo(index) {
 }
 
 /**
- * toggleMediaManagement() shows or hides the Media Management panel.
+ * Toggles the visibility of the Media Management panel.
  */
 function toggleMediaManagement() {
+  console.log("toggleMediaManagement clicked");
   document.getElementById("mediaManagement").classList.toggle("hidden");
 }
 
 /**
- * updateVideoList() refreshes the list of videos displayed in the Media Management panel.
- * It also enables drag-and-drop functionality for reordering.
+ * Refreshes the Media Management list and enables drag-and-drop.
  */
 function updateVideoList() {
   videoList.innerHTML = "";
@@ -161,8 +155,7 @@ function updateVideoList() {
   });
 }
 
-// On page load, update the video list and—if available—start playback.
-// Also, attempt to request fullscreen for the video container.
+// On load, update list and start playback (if videos exist), and request fullscreen.
 window.onload = () => {
   if (videoQueue.length > 0) {
     updateVideoList();
@@ -170,10 +163,17 @@ window.onload = () => {
     let videoContainer = document.querySelector(".circle");
     if (videoContainer.requestFullscreen) {
       videoContainer.requestFullscreen();
-    } else if (videoContainer.webkitRequestFullscreen) { // Safari compatibility
+    } else if (videoContainer.webkitRequestFullscreen) {
       videoContainer.webkitRequestFullscreen();
-    } else if (videoContainer.msRequestFullscreen) { // Edge compatibility
+    } else if (videoContainer.msRequestFullscreen) {
       videoContainer.msRequestFullscreen();
     }
   }
 };
+
+// Expose functions to global scope so inline onclick handlers work.
+window.uploadVideos = uploadVideos;
+window.skipNext = skipNext;
+window.skipPrevious = skipPrevious;
+window.toggleMediaManagement = toggleMediaManagement;
+window.removeVideo = removeVideo;
