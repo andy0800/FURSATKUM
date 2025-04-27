@@ -1,32 +1,59 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Video Slideshow Website</title>
-    <link rel="stylesheet" href="styles.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Video Slideshow Website</title>
+  <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-    <div class="container">
-        <div class="circle video-section">
-            <video id="videoPlayer" controls autoplay></video>
-        </div>
-
-        <div class="controls">
-            <input type="file" id="videoInput" accept="video/*" multiple>
-            <button onclick="uploadVideos()">Add Videos</button>
-            <button onclick="skipPrevious()">⏪ Previous</button>
-            <button onclick="skipNext()">⏩ Next</button>
-            <button onclick="toggleMediaManagement()">📂 Media Management</button>
-        </div>
+  <div class="container">
+    <div class="circle video-section">
+      <video id="videoPlayer" controls autoplay></video>
     </div>
-
-    <div id="mediaManagement" class="hidden">
-        <h3>Media Management (Drag to Rearrange)</h3>
-        <div id="videoList"></div>
-        <button onclick="toggleMediaManagement()">❌ Close</button>
+    <div class="controls">
+      <input type="file" id="videoInput" accept="video/*" multiple />
+      <button onclick="uploadVideos()">Add Videos</button>
+      <button onclick="skipPrevious()">⏪ Previous</button>
+      <button onclick="skipNext()">⏩ Next</button>
+      <button onclick="toggleMediaManagement()">📂 Media Management</button>
     </div>
+  </div>
 
-    <script src="script.js"></script>
+  <div id="mediaManagement" class="hidden">
+    <h3>Media Management (Drag to Rearrange)</h3>
+    <div id="videoList"></div>
+    <button onclick="toggleMediaManagement()">❌ Close</button>
+  </div>
+
+  <!-- Firebase SDK configuration -->
+  <script type="module">
+    // Your Firebase configuration (replace with your actual credentials)
+    const firebaseConfig = {
+      apiKey: "AIzaSyCxs2dqhkoTrsUfZtqxH2EhZD7MqclNGf0",
+      authDomain: "fursatkum-videos.firebaseapp.com",
+      projectId: "fursatkum-videos",
+      storageBucket: "fursatkum-videos.firebasestorage.app",
+      messagingSenderId: "699158181842",
+      appId: "1:699158181842:web:a55a2cdf6d76d15c8c3a0b",
+      measurementId: "G-HCTPLVZ620"
+    };
+
+    // Import and initialize Firebase
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.19.1/firebase-app.js";
+    import { getStorage } from "https://www.gstatic.com/firebasejs/9.19.1/firebase-storage.js";
+    import { getFirestore } from "https://www.gstatic.com/firebasejs/9.19.1/firebase-firestore.js";
+
+    const app = initializeApp(firebaseConfig);
+    const storage = getStorage(app);
+    const db = getFirestore(app);
+
+    // Expose Firebase services to the global scope for use in script.js
+    window.firebaseStorage = storage;
+    window.firebaseDB = db;
+  </script>
+
+  <!-- Our main JavaScript file -->
+  <script src="script.js" type="module"></script>
 </body>
 </html>
