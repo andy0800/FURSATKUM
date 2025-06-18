@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Maid Visa Management</title>
+    <!-- Bootstrap 4 CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
+    <!-- Google Fonts: Roboto (as in the Candidate Reservation sample) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet" />
+    <!-- Custom Stylesheet -->
+    <link rel="stylesheet" href="styles.css?v=4" />
+    <!-- Firebase SDK (compat version) -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-storage-compat.js"></script>
+  </head>
+  <body>
+    <!-- Header -->
+    <header class="header text-center">
+      <div class="container">
+        <h1>Maid Visa Management</h1>
+      </div>
+    </header>
+    
+    <!-- Main Content -->
+    <div class="container mt-4">
+      <!-- Main Nav Tabs -->
+      <ul class="nav nav-tabs justify-content-center" id="mainTab" role="tablist">
+        <li class="nav-item">
+          <a class="nav-link active" id="manage-tab" data-toggle="tab" href="#manage" role="tab" aria-controls="manage" aria-selected="true">
+            Management
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" id="add-tab" data-toggle="tab" href="#add" role="tab" aria-controls="add" aria-selected="false">
+            Add New
+          </a>
+        </li>
+      </ul>
+      
+      <!-- Tab Content -->
+      <div class="tab-content mt-3" id="mainTabContent">
+        <!-- Management Tab -->
+        <div class="tab-pane fade show active" id="manage" role="tabpanel" aria-labelledby="manage-tab">
+          <!-- Sub-tabs (Secretaries, Maid Visas, Expiring Soon) -->
+          <ul class="nav nav-pills justify-content-center mb-3" id="manageSubTab" role="tablist">
+            <li class="nav-item">
+              <a class="nav-link active" id="secretaries-manage-tab" data-toggle="pill" href="#secretariesManage" role="tab" aria-controls="secretariesManage" aria-selected="true">
+                Secretaries
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" id="maid-visas-manage-tab" data-toggle="pill" href="#maidVisasManage" role="tab" aria-controls="maidVisasManage" aria-selected="false">
+                Maid Visas
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" id="expiring-manage-tab" data-toggle="pill" href="#expiringManage" role="tab" aria-controls="expiringManage" aria-selected="false">
+                Expiring Soon
+              </a>
+            </li>
+          </ul>
+          <div class="tab-content" id="manageSubTabContent">
+            <!-- Secretaries Management -->
+            <div class="tab-pane fade show active" id="secretariesManage" role="tabpanel" aria-labelledby="secretaries-manage-tab">
+              <ul id="secretariesList" class="list-group">
+                <!-- Secretary list items will be loaded here -->
+              </ul>
+            </div>
+            <!-- Maid Visas Management -->
+            <div class="tab-pane fade" id="maidVisasManage" role="tabpanel" aria-labelledby="maid-visas-manage-tab">
+              <ul id="maidVisasList" class="list-group">
+                <!-- Maid visa list items will load here -->
+              </ul>
+            </div>
+            <!-- Expiring Soon -->
+            <div class="tab-pane fade" id="expiringManage" role="tabpanel" aria-labelledby="expiring-manage-tab">
+              <ul id="expiringVisaList" class="list-group">
+                <!-- All visas sorted by expiry date will load here -->
+              </ul>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Add New Tab -->
+        <div class="tab-pane fade" id="add" role="tabpanel" aria-labelledby="add-tab">
+          <div class="text-center">
+            <button class="btn btn-primary btn-add" onclick="toggleForm('secretary')">Create Secretary</button>
+            <button class="btn btn-primary btn-add" onclick="toggleForm('maidVisa')">Create Maid Visa</button>
+          </div>
+          <!-- Secretary Form (hidden by default) -->
+          <div id="secretaryFormSection" class="form-section" style="display: none;">
+            <h3>Add New Secretary</h3>
+            <form id="secretaryForm">
+              <div class="form-group">
+                <label for="secretaryName">Secretary Name</label>
+                <input type="text" class="form-control" id="secretaryName" placeholder="Enter secretary name" required>
+              </div>
+              <input type="hidden" id="secretaryId" value="">
+              <button type="submit" class="btn btn-success">Save Secretary</button>
+            </form>
+          </div>
+          <!-- Maid Visa Form (visible by default) -->
+          <div id="maidVisaFormSection" class="form-section" style="display: block;">
+            <h3>Add New Maid Visa</h3>
+            <form id="maidVisaForm">
+              <div class="form-group">
+                <label for="maidName">Maid Name</label>
+                <input type="text" class="form-control" id="maidName" placeholder="Enter maid name" required>
+              </div>
+              <div class="form-group">
+                <label for="visaNumber">Visa Number</label>
+                <input type="text" class="form-control" id="visaNumber" placeholder="Enter visa number" required>
+              </div>
+              <div class="form-group">
+                <label for="passportNumber">Passport Number</label>
+                <input type="text" class="form-control" id="passportNumber" placeholder="Enter passport number" required>
+              </div>
+              <div class="form-group">
+                <label for="homeCountry">Home Country</label>
+                <input type="text" class="form-control" id="homeCountry" placeholder="Enter home country" required>
+              </div>
+              <div class="form-group">
+                <label for="expiryDateInput">Expiry Date</label>
+                <input type="date" class="form-control" id="expiryDateInput" required>
+              </div>
+              <div class="form-group">
+                <label for="secretarySelect">Select Secretary In Charge</label>
+                <select class="form-control" id="secretarySelect" required>
+                  <option value="">-- Choose Secretary --</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="visaImage">Visa Image (jpg)</label>
+                <input type="file" class="form-control-file" id="visaImage" accept="image/jpeg" required>
+              </div>
+              <button type="submit" class="btn btn-success">Save Maid Visa</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- jQuery and Bootstrap Scripts -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <!-- Firebase Config and Script -->
+    <script src="firebase-config.js"></script>
+    <script src="app.js"></script>
+    <!-- Toggle Form Script -->
+    <script>
+      function toggleForm(formType) {
+        document.getElementById("secretaryFormSection").style.display = "none";
+        document.getElementById("maidVisaFormSection").style.display = "none";
+        if (formType === "secretary") {
+          document.getElementById("secretaryFormSection").style.display = "block";
+        } else if (formType === "maidVisa") {
+          document.getElementById("maidVisaFormSection").style.display = "block";
+        }
+      }
+    </script>
+  </body>
+</html>

@@ -1,0 +1,142 @@
+/* Global Styles from the Candidate Reservation sample */
+body {
+  font-family: 'Roboto', sans-serif;
+  background: #f1f1f1;
+  color: #333;
+  text-align: center;
+  margin: 0;
+  padding: 0;
+}
+
+/* Header Styling */
+.header {
+  background: linear-gradient(135deg, #394867, #212a3e);
+  color: #fff;
+  padding: 1.5rem 0;
+}
+.header h1 {
+  font-size: 2.5rem;
+  font-weight: 700;
+}
+
+/* Container for Main Content */
+.container {
+  max-width: 1200px;
+  margin: auto;
+}
+
+/* Nav Tabs */
+.nav-tabs .nav-link {
+  font-size: 1.1rem;
+  font-weight: 500;
+  border: none;
+  border-radius: 20px;
+  background-color: rgba(255,255,255,0.25);
+  margin: 0 0.5rem;
+  transition: background-color 0.3s ease;
+}
+.nav-tabs .nav-link.active,
+.nav-tabs .nav-link:hover {
+  background-color: rgba(255,255,255,0.45);
+}
+
+/* Tab Content Panels */
+.tab-content {
+  background: #fff;
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  margin-top: 1rem;
+}
+
+/* Form Section */
+.form-section {
+  background: #fff;
+  padding: 20px;
+  margin-top: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  text-align: left;
+}
+
+/* Form Group */
+.form-group {
+  margin-bottom: 1rem;
+  display: flex;
+  flex-direction: column;
+}
+.form-group label {
+  margin-bottom: 0.4rem;
+  font-weight: 600;
+  color: #555;
+}
+.form-group input[type="text"],
+.form-group input[type="date"],
+.form-group input[type="file"],
+.form-group select {
+  padding: 0.8rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+/* Button Styling */
+.btn {
+  padding: 10px 20px;
+  background: #4CAF50;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+.btn:hover {
+  background: #45a049;
+}
+
+.btn-add {
+  margin: 1rem 0;
+}
+
+/* List Group for Data (Secretaries, Visas) */
+.list-group {
+  text-align: left;
+}
+.list-group .list-group-item {
+  padding: 10px;
+  border: 1px solid #ddd;
+  margin-bottom: 5px;
+  cursor: pointer;
+}
+
+/* Reserve Button (for Maid Visa Card) */
+.reserve-button {
+  margin-top: 10px;
+  padding: 10px;
+  background: #4CAF50;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background 0.3s;
+  width: 100%;
+  font-weight: 500;
+}
+.reserve-button:hover {
+  background: #45a049;
+}
+.reserve-button:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .header h1 {
+    font-size: 2rem;
+  }
+  .nav-tabs .nav-link {
+    margin: 0 0.5rem;
+  }
+}

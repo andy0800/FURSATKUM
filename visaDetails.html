@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Visa Details</title>
+    <!-- Bootstrap 4 CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
+    <!-- Custom Stylesheet -->
+    <link rel="stylesheet" href="styles.css?v=4" />
+  </head>
+  <body>
+    <div class="container mt-4">
+      <h2 class="mb-4">Visa Details</h2>
+      <div id="visaInfoCard" class="card">
+        <div class="card-body">
+          <!-- Visa information will be injected here -->
+        </div>
+      </div>
+      <br>
+      <a href="index.html" class="btn">Back to Dashboard</a>
+    </div>
+    
+    <!-- jQuery and Bootstrap Scripts -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const visaData = localStorage.getItem("selectedVisa");
+        const visaInfoElement = document.querySelector("#visaInfoCard .card-body");
+        if (visaData) {
+          const visa = JSON.parse(visaData);
+          visaInfoElement.innerHTML = `
+            <h3>${visa.name}</h3>
+            <p><strong>Visa Number:</strong> ${visa.visaNumber}</p>
+            <p><strong>Passport Number:</strong> ${visa.passportNumber}</p>
+            <p><strong>Home Country:</strong> ${visa.homeCountry}</p>
+            <p><strong>Secretary In Charge:</strong> ${visa.secretaryInCharge}</p>
+            <p><strong>Expiry Date:</strong> ${new Date(visa.expiryDate.seconds * 1000).toLocaleDateString()}</p>
+            <img src="${visa.visaImageUrl}" alt="Visa Image" class="img-fluid" style="max-width:400px;" />
+          `;
+        } else {
+          visaInfoElement.innerHTML = `<p>No visa data available.</p>`;
+        }
+      });
+    </script>
+  </body>
+</html>
