@@ -14,7 +14,7 @@ const visaList = document.getElementById("maidVisasList");
 // For the Expiring Soon tab (we use a list)
 const filteredVisaList = document.getElementById("expiringVisaList");
 
-// Load secretaries as list-group items. When clicked, load the related visas into the "Maid Visas" tab and switch tabs.
+// Load secretaries as list-group items.
 function loadSecretaries() {
   db.collection("secretaries")
     .get()
@@ -70,12 +70,12 @@ function loadVisasForSecretary(secretaryId) {
         const visa = doc.data();
         const li = document.createElement("li");
         li.className = "list-group-item list-group-item-success";
-        let expiryText = "No expiry date";
-        if (visa.expiryDate && visa.expiryDate.seconds) {
-          expiryText = new Date(visa.expiryDate.seconds * 1000).toLocaleDateString();
+        let startText = "No start date";
+        if (visa.visaStartDate && visa.visaStartDate.seconds) {
+          startText = new Date(visa.visaStartDate.seconds * 1000).toLocaleDateString();
         }
         li.innerHTML = `<strong>Passport:</strong> ${visa.passportNumber}<br>
-                        <small>Expires: ${expiryText}</small>`;
+                        <small>Start Date: ${startText}</small>`;
         li.onclick = function () {
           localStorage.setItem("selectedVisa", JSON.stringify(visa));
           window.location.href = "visaDetails.html";
@@ -86,7 +86,8 @@ function loadVisasForSecretary(secretaryId) {
     .catch((error) => console.error("Error loading visas for secretary:", error));
 }
 
-// Load all visas (regardless of secretary) for the "Expiring Soon" tab and arrange by expiry date.
+// Load all visas (regardless of secretary) for the "Expiring Soon" tab,
+// sort them by expiry (end) date in ascending order, and display that date.
 function loadFilteredVisas() {
   filteredVisaList.innerHTML = "";
   let allVisas = [];
@@ -110,7 +111,7 @@ function loadFilteredVisas() {
           allVisas.push(doc.data());
         });
       });
-      // Sort by expiry date ascending.
+      // Sort by expiry (end) date ascending.
       allVisas.sort((a, b) => {
         if (a.expiryDate && a.expiryDate.seconds && b.expiryDate && b.expiryDate.seconds) {
           return a.expiryDate.seconds - b.expiryDate.seconds;
@@ -125,12 +126,12 @@ function loadFilteredVisas() {
       allVisas.forEach((visa) => {
         const li = document.createElement("li");
         li.className = "list-group-item list-group-item-success";
-        let expiryText = "No expiry date";
+        let endText = "No expiry date";
         if (visa.expiryDate && visa.expiryDate.seconds) {
-          expiryText = new Date(visa.expiryDate.seconds * 1000).toLocaleDateString();
+          endText = new Date(visa.expiryDate.seconds * 1000).toLocaleDateString();
         }
         li.innerHTML = `<strong>Passport:</strong> ${visa.passportNumber} <br>
-                        <small>Expires: ${expiryText}</small>`;
+                        <small>End Date: ${endText}</small>`;
         li.onclick = function () {
           localStorage.setItem("selectedVisa", JSON.stringify(visa));
           window.location.href = "visaDetails.html";
@@ -179,6 +180,17 @@ document.getElementById("maidVisaForm").addEventListener("submit", function (e) 
   const passportNumber = document.getElementById("passportNumber").value;
   const homeCountry = document.getElementById("homeCountry").value;
   const file = document.getElementById("visaImage").files[0];
+
+  // Get visa start date.
+  const visaStartDateInput = document.getElementById("visaStartDateInput").value;
+  if (!visaStartDateInput) {
+    alert("Please set a visa start date.");
+    return;
+  }
+  const visaStartDateObj = new Date(visaStartDateInput);
+  const visaStartDate = firebase.firestore.Timestamp.fromDate(visaStartDateObj);
+  
+  // Get expiry date.
   const expiryDateInput = document.getElementById("expiryDateInput").value;
   if (!expiryDateInput) {
     alert("Please set an expiry date.");
@@ -186,7 +198,7 @@ document.getElementById("maidVisaForm").addEventListener("submit", function (e) 
   }
   const expiryDateObj = new Date(expiryDateInput);
   const expiryDate = firebase.firestore.Timestamp.fromDate(expiryDateObj);
-  
+
   if (file) {
     const storageRef = storage.ref(`visaImages/${file.name}`);
     const uploadTask = storageRef.put(file);
@@ -204,11 +216,12 @@ document.getElementById("maidVisaForm").addEventListener("submit", function (e) 
             homeCountry: homeCountry,
             secretaryInCharge: selectedSec,
             visaImageUrl: downloadURL,
+            visaStartDate: visaStartDate,
             expiryDate: expiryDate
           })
           .then(function () {
             alert("Maid visa added successfully!");
-            // Optionally, you can refresh the visas view.
+            // Refresh the visas view.
             loadVisasForSecretary(selectedSec);
             loadFilteredVisas();
           })

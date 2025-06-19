@@ -1,49 +1,109 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Visa Details</title>
-    <!-- Bootstrap 4 CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
-    <!-- Custom Stylesheet -->
-    <link rel="stylesheet" href="styles.css?v=4" />
-  </head>
-  <body>
-    <div class="container mt-4">
-      <h2 class="mb-4">Visa Details</h2>
-      <div id="visaInfoCard" class="card">
-        <div class="card-body">
-          <!-- Visa information will be injected here -->
-        </div>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Visa Details</title>
+  <!-- Bootstrap 4 CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
+  <!-- Custom inline styles for a professional, colorful appearance -->
+  <style>
+    body {
+      background: #f0f5f9;
+      font-family: 'Roboto', sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+    .container {
+      margin-top: 5rem;
+      margin-bottom: 5rem;
+    }
+    h2 {
+      color: #007bff;
+      font-weight: 700;
+      margin-bottom: 1.5rem;
+    }
+    .card {
+      border: none;
+      border-radius: 0.75rem;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      background: linear-gradient(135deg, #ffffff, #e6f0ff);
+    }
+    .card-body {
+      padding: 2rem;
+    }
+    .visa-details-row {
+      align-items: center;
+    }
+    .visa-image {
+      border-radius: 0.5rem;
+      border: 2px solid #007bff;
+      max-width: 100%;
+    }
+    .card-body h3 {
+      color: #333;
+      margin-bottom: 1rem;
+    }
+    .card-body p {
+      color: #555;
+      font-size: 1.125rem;
+      margin-bottom: 0.5rem;
+    }
+    .btn-primary {
+      background-color: #007bff;
+      border-color: #007bff;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2 class="text-center">Visa Details</h2>
+    <div id="visaInfoCard" class="card">
+      <div class="card-body">
+        <!-- Visa information will be injected here -->
       </div>
-      <br>
-      <a href="index.html" class="btn">Back to Dashboard</a>
     </div>
-    
-    <!-- jQuery and Bootstrap Scripts -->
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <script>
-      document.addEventListener("DOMContentLoaded", function () {
-        const visaData = localStorage.getItem("selectedVisa");
-        const visaInfoElement = document.querySelector("#visaInfoCard .card-body");
-        if (visaData) {
-          const visa = JSON.parse(visaData);
-          visaInfoElement.innerHTML = `
-            <h3>${visa.name}</h3>
-            <p><strong>Visa Number:</strong> ${visa.visaNumber}</p>
-            <p><strong>Passport Number:</strong> ${visa.passportNumber}</p>
-            <p><strong>Home Country:</strong> ${visa.homeCountry}</p>
-            <p><strong>Secretary In Charge:</strong> ${visa.secretaryInCharge}</p>
-            <p><strong>Expiry Date:</strong> ${new Date(visa.expiryDate.seconds * 1000).toLocaleDateString()}</p>
-            <img src="${visa.visaImageUrl}" alt="Visa Image" class="img-fluid" style="max-width:400px;" />
-          `;
-        } else {
-          visaInfoElement.innerHTML = `<p>No visa data available.</p>`;
-        }
-      });
-    </script>
-  </body>
+    <div class="mt-4 text-center">
+      <a href="index.html" class="btn btn-primary">Back to Dashboard</a>
+    </div>
+  </div>
+  
+  <!-- jQuery and Bootstrap JS -->
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const visaData = localStorage.getItem("selectedVisa");
+      const visaInfoElement = document.querySelector("#visaInfoCard .card-body");
+      if (visaData) {
+        const visa = JSON.parse(visaData);
+        // Prepare start and end date values.
+        const startDate = visa.visaStartDate ? new Date(visa.visaStartDate.seconds * 1000).toLocaleDateString() : "Not available";
+        const endDate = visa.expiryDate ? new Date(visa.expiryDate.seconds * 1000).toLocaleDateString() : "Not available";
+        // Create a layout with details on the left and the image on the right.
+        const detailsHTML = `
+          <div class="row visa-details-row">
+            <div class="col-md-8 text-left">
+              <h3>${visa.name}</h3>
+              <p><strong>Visa Number:</strong> ${visa.visaNumber}</p>
+              <p><strong>Passport Number:</strong> ${visa.passportNumber}</p>
+              <p><strong>Home Country:</strong> ${visa.homeCountry}</p>
+              <p><strong>Secretary In Charge:</strong> ${visa.secretaryInCharge}</p>
+              <p><strong>Visa Start Date:</strong> ${startDate}</p>
+              <p><strong>Visa End Date:</strong> ${endDate}</p>
+            </div>
+            <div class="col-md-4 text-center">
+              <img src="${visa.visaImageUrl}" alt="Visa Image" class="img-fluid visa-image" />
+            </div>
+          </div>
+        `;
+        visaInfoElement.innerHTML = detailsHTML;
+      } else {
+        visaInfoElement.innerHTML = `<p>No visa data available.</p>`;
+      }
+    });
+  </script>
+</body>
 </html>
