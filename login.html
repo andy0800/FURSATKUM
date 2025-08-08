@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Login - Maid Visa Management</title>
+  <!-- Bootstrap 4 CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
+  <!-- Google Fonts: Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+  <!-- Custom Stylesheet -->
+  <link rel="stylesheet" href="styles.css?v=5" />
+  <!-- Firebase SDK (compat version) -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-storage-compat.js"></script>
+  <style>
+    body {
+      background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Inter', sans-serif;
+    }
+    .login-card {
+      background: var(--background-white);
+      border-radius: var(--border-radius-lg);
+      box-shadow: var(--shadow-xl);
+      padding: 2rem;
+      width: 100%;
+      max-width: 400px;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .login-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, var(--primary-color), var(--success-color), var(--warning-color));
+    }
+    .login-header {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+    .login-header h1 {
+      color: var(--text-primary);
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+    }
+    .login-header p {
+      color: var(--text-secondary);
+      margin: 0;
+    }
+    .form-control {
+      border-radius: var(--border-radius);
+      border: 2px solid var(--border-color);
+      padding: 12px 15px;
+      transition: var(--transition);
+    }
+    .form-control:focus {
+      border-color: var(--primary-color);
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+    }
+    .btn-login {
+      background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+      border: none;
+      border-radius: var(--border-radius);
+      padding: 12px;
+      font-weight: 600;
+      width: 100%;
+      transition: var(--transition);
+    }
+    .btn-login:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-lg);
+    }
+    .alert {
+      border-radius: var(--border-radius);
+      margin-bottom: 1rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="login-card">
+    <div class="login-header">
+      <h1><i class="fas fa-passport mr-2"></i>Maid Visa Management</h1>
+      <p>Please login to continue</p>
+    </div>
+    
+    <div id="errorMessage" class="alert alert-danger" style="display: none;"></div>
+    <div id="successMessage" class="alert alert-success" style="display: none;"></div>
+    
+    <form id="loginForm">
+      <div class="form-group">
+        <label for="username"><i class="fas fa-user mr-2"></i>Username</label>
+        <input type="text" class="form-control" id="username" placeholder="Enter username" required>
+      </div>
+      <div class="form-group">
+        <label for="password"><i class="fas fa-lock mr-2"></i>Password</label>
+        <input type="password" class="form-control" id="password" placeholder="Enter password" required>
+      </div>
+      <button type="submit" class="btn btn-primary btn-login">
+        <i class="fas fa-sign-in-alt mr-2"></i>Login
+      </button>
+    </form>
+    
+  
+  </div>
+
+  <!-- Firebase Config and Script -->
+  <script src="firebase-config.js"></script>
+  <script>
+    // Check if user is already logged in
+    const currentUser = localStorage.getItem('currentUser');
+    if (currentUser) {
+      window.location.href = 'index.html';
+    }
+
+    // Handle login form submission
+    document.getElementById('loginForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      const username = document.getElementById('username').value;
+      const password = document.getElementById('password').value;
+      
+      // Hide any existing messages
+      document.getElementById('errorMessage').style.display = 'none';
+      document.getElementById('successMessage').style.display = 'none';
+      
+      // Check against users collection in Firestore
+      db.collection("users").where("username", "==", username).get()
+        .then((querySnapshot) => {
+          if (!querySnapshot.empty) {
+            const userDoc = querySnapshot.docs[0];
+            const userData = userDoc.data();
+            if (userData.password === password) {
+              // Store user data in localStorage
+              localStorage.setItem('currentUser', JSON.stringify(userData));
+              showMessage('Login successful! Redirecting...', 'success');
+              setTimeout(() => {
+                window.location.href = 'index.html';
+              }, 1000);
+            } else {
+              showMessage('Invalid username or password', 'error');
+            }
+          } else {
+            showMessage('Invalid username or password', 'error');
+          }
+        })
+        .catch((error) => {
+          console.error('Login error:', error);
+          showMessage('Login error: ' + error.message, 'error');
+        });
+    });
+
+    function showMessage(message, type) {
+      const errorDiv = document.getElementById('errorMessage');
+      const successDiv = document.getElementById('successMessage');
+      
+      if (type === 'error') {
+        errorDiv.textContent = message;
+        errorDiv.style.display = 'block';
+        successDiv.style.display = 'none';
+      } else {
+        successDiv.textContent = message;
+        successDiv.style.display = 'block';
+        errorDiv.style.display = 'none';
+      }
+    }
+  </script>
+</body>
+</html>

@@ -6,12 +6,14 @@
   <title>Maid Visa Management</title>
   <!-- Bootstrap 4 CSS -->
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
-  <!-- Google Fonts: Roboto -->
+  <!-- Google Fonts: Inter -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
   <!-- Custom Stylesheet -->
-  <link rel="stylesheet" href="styles.css?v=4" />
+  <link rel="stylesheet" href="styles.css?v=5" />
   <!-- Firebase SDK (compat version) -->
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
@@ -21,11 +23,25 @@
   <!-- Header -->
   <header class="header text-center">
     <div class="container">
-      <h1>Maid Visa Management</h1>
+      <div class="d-flex justify-content-between align-items-center">
+        <h1>Maid Visa Management</h1>
+                 <div>
+           <span id="currentUser" class="text-white mr-3"><i class="fas fa-user mr-1"></i></span>
+           <button class="btn btn-outline-light btn-sm mr-2" onclick="showCreateUserModal()">
+             <i class="fas fa-user-plus mr-1"></i>Create User
+           </button>
+           <button class="btn btn-outline-light btn-sm mr-2" onclick="showActionsLog()">
+             <i class="fas fa-history mr-1"></i>Actions Log
+           </button>
+           <button class="btn btn-outline-light btn-sm" onclick="logout()">
+             <i class="fas fa-sign-out-alt mr-1"></i>Logout
+           </button>
+         </div>
+      </div>
     </div>
   </header>
   <!-- Main Content -->
-  <div class="container mt-4">
+  <div class="container main-content">
     <!-- Main Nav Tabs -->
     <ul class="nav nav-tabs justify-content-center" id="mainTab" role="tablist">
       <li class="nav-item">
@@ -43,7 +59,7 @@
     <div class="tab-content mt-3" id="mainTabContent">
       <!-- Management Tab -->
       <div class="tab-pane fade show active" id="manage" role="tabpanel" aria-labelledby="manage-tab">
-        <!-- Sub-tabs (Secretaries, Maid Visas, Expiring Soon) -->
+        <!-- Sub-tabs (Secretaries, Maid Visas, Expiring Soon, Cancelled, Arrived) -->
         <ul class="nav nav-pills justify-content-center mb-3" id="manageSubTab" role="tablist">
           <li class="nav-item">
             <a class="nav-link active" id="secretaries-manage-tab" data-toggle="pill" href="#secretariesManage" role="tab" aria-controls="secretariesManage" aria-selected="true">
@@ -58,6 +74,16 @@
           <li class="nav-item">
             <a class="nav-link" id="expiring-manage-tab" data-toggle="pill" href="#expiringManage" role="tab" aria-controls="expiringManage" aria-selected="false">
               Expiring Soon
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" id="cancelled-manage-tab" data-toggle="pill" href="#cancelledManage" role="tab" aria-controls="cancelledManage" aria-selected="false">
+              Cancelled
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" id="arrived-manage-tab" data-toggle="pill" href="#arrivedManage" role="tab" aria-controls="arrivedManage" aria-selected="false">
+              Arrived
             </a>
           </li>
         </ul>
@@ -80,17 +106,33 @@
               <!-- All visas sorted by expiry date will load here -->
             </ul>
           </div>
+          <!-- Cancelled Visas -->
+          <div class="tab-pane fade" id="cancelledManage" role="tabpanel" aria-labelledby="cancelled-manage-tab">
+            <ul id="cancelledVisaList" class="list-group">
+              <!-- Cancelled visas will load here -->
+            </ul>
+          </div>
+          <!-- Arrived Visas -->
+          <div class="tab-pane fade" id="arrivedManage" role="tabpanel" aria-labelledby="arrived-manage-tab">
+            <ul id="arrivedVisaList" class="list-group">
+              <!-- Arrived visas will load here -->
+            </ul>
+          </div>
         </div>
       </div>
       <!-- Add New Tab -->
       <div class="tab-pane fade" id="add" role="tabpanel" aria-labelledby="add-tab">
-        <div class="text-center">
-          <button class="btn btn-primary btn-add" onclick="toggleForm('secretary')">Create Secretary</button>
-          <button class="btn btn-primary btn-add" onclick="toggleForm('maidVisa')">Create Maid Visa</button>
+        <div class="text-center mb-4">
+          <button class="btn btn-primary btn-add" onclick="toggleForm('secretary')">
+            <i class="fas fa-user-plus mr-2"></i>Create Secretary
+          </button>
+          <button class="btn btn-primary btn-add" onclick="toggleForm('maidVisa')">
+            <i class="fas fa-passport mr-2"></i>Create Maid Visa
+          </button>
         </div>
         <!-- Secretary Form (hidden by default) -->
         <div id="secretaryFormSection" class="form-section" style="display: none;">
-          <h3>Add New Secretary</h3>
+          <h3><i class="fas fa-user-plus mr-2"></i>Add New Secretary</h3>
           <form id="secretaryForm">
             <div class="form-group">
               <label for="secretaryName">Secretary Name</label>
@@ -100,51 +142,338 @@
             <button type="submit" class="btn btn-success">Save Secretary</button>
           </form>
         </div>
-        <!-- Maid Visa Form (visible by default) -->
+        <!-- Enhanced Maid Visa Form (visible by default) -->
         <div id="maidVisaFormSection" class="form-section" style="display: block;">
-          <h3>Add New Maid Visa</h3>
+          <h3><i class="fas fa-passport mr-2"></i>Add New Maid Visa</h3>
           <form id="maidVisaForm">
-            <div class="form-group">
-              <label for="maidName">Maid Name</label>
-              <input type="text" class="form-control" id="maidName" placeholder="Enter maid name" required>
+            <!-- Basic Maid Information -->
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="maidName">Maid Name</label>
+                  <input type="text" class="form-control" id="maidName" placeholder="Enter maid name" required>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="visaNumber">Visa Number</label>
+                  <input type="text" class="form-control" id="visaNumber" placeholder="Enter visa number" required>
+                </div>
+              </div>
             </div>
-            <div class="form-group">
-              <label for="visaNumber">Visa Number</label>
-              <input type="text" class="form-control" id="visaNumber" placeholder="Enter visa number" required>
+            
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="passportNumber">Passport Number</label>
+                  <input type="text" class="form-control" id="passportNumber" placeholder="Enter passport number" required>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="homeCountry">Home Country</label>
+                  <input type="text" class="form-control" id="homeCountry" placeholder="Enter home country" required>
+                </div>
+              </div>
             </div>
-            <div class="form-group">
-              <label for="passportNumber">Passport Number</label>
-              <input type="text" class="form-control" id="passportNumber" placeholder="Enter passport number" required>
+
+            <!-- Sponsor Information -->
+            <h5 class="mt-4"><i class="fas fa-user-tie mr-2"></i>Sponsor Information</h5>
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="sponsorName">Sponsor Name</label>
+                  <input type="text" class="form-control" id="sponsorName" placeholder="Enter sponsor name" required>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="sponsorCivilId">Sponsor Civil ID</label>
+                  <input type="text" class="form-control" id="sponsorCivilId" placeholder="Enter sponsor civil ID" required>
+                </div>
+              </div>
             </div>
-            <div class="form-group">
-              <label for="homeCountry">Home Country</label>
-              <input type="text" class="form-control" id="homeCountry" placeholder="Enter home country" required>
+
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="sponsorPhone">Sponsor Phone Number</label>
+                  <input type="tel" class="form-control" id="sponsorPhone" placeholder="Enter sponsor phone number" required>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="visaPrice">Visa Price (KWD)</label>
+                  <input type="number" step="0.01" class="form-control" id="visaPrice" placeholder="Enter visa price in KWD" required>
+                </div>
+              </div>
             </div>
-            <!-- New Visa Start Date Field -->
-            <div class="form-group">
-              <label for="visaStartDateInput">Visa Start Date</label>
-              <input type="date" class="form-control" id="visaStartDateInput" required>
+
+            <!-- Visa Details -->
+            <h5 class="mt-4"><i class="fas fa-calendar-alt mr-2"></i>Visa Details</h5>
+            <div class="row">
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label for="visaStartDateInput">Visa Start Date</label>
+                  <input type="date" class="form-control" id="visaStartDateInput" required>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label for="visaIssueDate">Visa Issue Date</label>
+                  <input type="date" class="form-control" id="visaIssueDate" required>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label for="expiryDateInput">Expiry Date</label>
+                  <input type="date" class="form-control" id="expiryDateInput" required>
+                </div>
+              </div>
             </div>
-            <div class="form-group">
-              <label for="expiryDateInput">Expiry Date</label>
-              <input type="date" class="form-control" id="expiryDateInput" required>
+
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="visaVendor">Visa Vendor</label>
+                  <input type="text" class="form-control" id="visaVendor" placeholder="Enter visa vendor" required>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="secretarySelect">Select Secretary In Charge</label>
+                  <select class="form-control" id="secretarySelect" required>
+                    <option value="">-- Choose Secretary --</option>
+                  </select>
+                </div>
+              </div>
             </div>
+
+            <!-- Optional Details -->
             <div class="form-group">
-              <label for="secretarySelect">Select Secretary In Charge</label>
-              <select class="form-control" id="secretarySelect" required>
-                <option value="">-- Choose Secretary --</option>
-              </select>
+              <label for="optionalDetails"><i class="fas fa-sticky-note mr-2"></i>Optional Details</label>
+              <textarea class="form-control" id="optionalDetails" rows="3" placeholder="Enter any additional details or notes"></textarea>
             </div>
-            <div class="form-group">
-              <label for="visaImage">Visa Image (jpg)</label>
-              <input type="file" class="form-control-file" id="visaImage" accept="image/jpeg" required>
+
+            <!-- File Uploads -->
+            <h5 class="mt-4"><i class="fas fa-file-upload mr-2"></i>Documents</h5>
+            <div class="row">
+              <div class="col-md-6">
+                                 <div class="form-group">
+                   <label for="visaImage">Visa Image (jpg) - Optional</label>
+                   <input type="file" class="form-control-file" id="visaImage" accept="image/jpeg">
+                   <small class="form-text text-muted">You can add this later by editing the visa</small>
+                 </div>
+               </div>
+               <div class="col-md-6">
+                 <div class="form-group">
+                   <label for="sponsorCivilIdImage">Sponsor Civil ID Image (jpg) - Optional</label>
+                   <input type="file" class="form-control-file" id="sponsorCivilIdImage" accept="image/jpeg">
+                   <small class="form-text text-muted">Upload front and back as one image, or a full image of the civil ID. You can add this later by editing the visa.</small>
+                 </div>
+              </div>
             </div>
+
             <button type="submit" class="btn btn-success">Save Maid Visa</button>
           </form>
         </div>
       </div>
     </div>
+     </div>
+   
+   <!-- Create User Modal -->
+   <div class="modal fade" id="createUserModal" tabindex="-1" role="dialog" aria-labelledby="createUserModalLabel" aria-hidden="true">
+     <div class="modal-dialog" role="document">
+       <div class="modal-content">
+         <div class="modal-header">
+           <h5 class="modal-title" id="createUserModalLabel">Create New User</h5>
+           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+             <span aria-hidden="true">&times;</span>
+           </button>
+         </div>
+         <div class="modal-body">
+           <form id="createUserForm">
+             <div class="form-group">
+               <label for="newUsername">Username</label>
+               <input type="text" class="form-control" id="newUsername" placeholder="Enter username" required>
+             </div>
+             <div class="form-group">
+               <label for="newPassword">Password</label>
+               <input type="password" class="form-control" id="newPassword" placeholder="Enter password" required>
+             </div>
+             <div class="form-group">
+               <label for="confirmPassword">Confirm Password</label>
+               <input type="password" class="form-control" id="confirmPassword" placeholder="Confirm password" required>
+             </div>
+           </form>
+         </div>
+         <div class="modal-footer">
+           <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+           <button type="button" class="btn btn-primary" onclick="createUser()">Create User</button>
+         </div>
+       </div>
+     </div>
+   </div>
+   
+   <!-- Actions Log Modal -->
+   <div class="modal fade" id="actionsLogModal" tabindex="-1" role="dialog" aria-labelledby="actionsLogModalLabel" aria-hidden="true">
+     <div class="modal-dialog modal-lg" role="document">
+       <div class="modal-content">
+         <div class="modal-header">
+           <h5 class="modal-title" id="actionsLogModalLabel">Actions Log</h5>
+           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+             <span aria-hidden="true">&times;</span>
+           </button>
+         </div>
+         <div class="modal-body">
+           <div class="table-responsive">
+             <table class="table table-striped">
+               <thead>
+                 <tr>
+                   <th>Date & Time</th>
+                   <th>User</th>
+                   <th>Action</th>
+                   <th>Details</th>
+                 </tr>
+               </thead>
+               <tbody id="actionsLogTable">
+                 <!-- Actions will be loaded here -->
+               </tbody>
+             </table>
+           </div>
+         </div>
+         <div class="modal-footer">
+           <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+         </div>
+       </div>
+     </div>
+   </div>
+   
+   <!-- Edit Visa Modal -->
+  <div class="modal fade" id="editVisaModal" tabindex="-1" role="dialog" aria-labelledby="editVisaModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="editVisaModalLabel">Edit Visa</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form id="editVisaForm">
+            <input type="hidden" id="editVisaId" value="">
+            <input type="hidden" id="editSecretaryId" value="">
+            
+            <!-- Basic Maid Information -->
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="editMaidName">Maid Name</label>
+                  <input type="text" class="form-control" id="editMaidName" required>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="editVisaNumber">Visa Number</label>
+                  <input type="text" class="form-control" id="editVisaNumber" required>
+                </div>
+              </div>
+            </div>
+            
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="editPassportNumber">Passport Number</label>
+                  <input type="text" class="form-control" id="editPassportNumber" required>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="editHomeCountry">Home Country</label>
+                  <input type="text" class="form-control" id="editHomeCountry" required>
+                </div>
+              </div>
+            </div>
+
+            <!-- Sponsor Information -->
+            <h5 class="mt-4"><i class="fas fa-user-tie mr-2"></i>Sponsor Information</h5>
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="editSponsorName">Sponsor Name</label>
+                  <input type="text" class="form-control" id="editSponsorName" required>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="editSponsorCivilId">Sponsor Civil ID</label>
+                  <input type="text" class="form-control" id="editSponsorCivilId" required>
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="editSponsorPhone">Sponsor Phone Number</label>
+                  <input type="tel" class="form-control" id="editSponsorPhone" required>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="editVisaPrice">Visa Price (KWD)</label>
+                  <input type="number" step="0.01" class="form-control" id="editVisaPrice" required>
+                </div>
+              </div>
+            </div>
+
+            <!-- Visa Details -->
+            <h5 class="mt-4"><i class="fas fa-calendar-alt mr-2"></i>Visa Details</h5>
+            <div class="row">
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label for="editVisaStartDate">Visa Start Date</label>
+                  <input type="date" class="form-control" id="editVisaStartDate" required>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label for="editVisaIssueDate">Visa Issue Date</label>
+                  <input type="date" class="form-control" id="editVisaIssueDate" required>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label for="editExpiryDate">Expiry Date</label>
+                  <input type="date" class="form-control" id="editExpiryDate" required>
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="editVisaVendor">Visa Vendor</label>
+                  <input type="text" class="form-control" id="editVisaVendor" required>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="editOptionalDetails">Optional Details</label>
+                  <textarea class="form-control" id="editOptionalDetails" rows="3"></textarea>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+          <button type="button" class="btn btn-primary" onclick="saveVisaEdit()">Save Changes</button>
+        </div>
+      </div>
+    </div>
   </div>
+  
   <!-- jQuery and Bootstrap Scripts -->
   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
@@ -162,6 +491,134 @@
     } else if (formType === "maidVisa") {
       document.getElementById("maidVisaFormSection").style.display = "block";
     }
+  }
+
+  function logout() {
+    localStorage.removeItem('currentUser');
+    window.location.href = 'login.html';
+  }
+  
+  // Show create user modal
+  function showCreateUserModal() {
+    $('#createUserModal').modal('show');
+  }
+  
+  // Show actions log modal
+  function showActionsLog() {
+    loadActionsLog();
+    $('#actionsLogModal').modal('show');
+  }
+  
+  // Create new user
+  function createUser() {
+    const username = document.getElementById('newUsername').value;
+    const password = document.getElementById('newPassword').value;
+    const confirmPassword = document.getElementById('confirmPassword').value;
+    
+    if (!username || !password || !confirmPassword) {
+      alert('Please fill in all fields');
+      return;
+    }
+    
+    if (password !== confirmPassword) {
+      alert('Passwords do not match');
+      return;
+    }
+    
+    if (password.length < 6) {
+      alert('Password must be at least 6 characters long');
+      return;
+    }
+    
+    // Check if user already exists
+    db.collection('users').where('username', '==', username).get()
+      .then((querySnapshot) => {
+        if (!querySnapshot.empty) {
+          alert('Username already exists');
+          return;
+        }
+        
+        // Create new user
+        const userData = {
+          username: username,
+          password: password, // In production, this should be hashed
+          createdAt: firebase.firestore.Timestamp.now()
+        };
+        
+        return db.collection('users').add(userData);
+      })
+      .then((docRef) => {
+        if (docRef) {
+          alert('User created successfully!');
+          $('#createUserModal').modal('hide');
+          document.getElementById('createUserForm').reset();
+          
+          // Log the action
+          logAction('User Creation', `Created user: ${username}`);
+        }
+      })
+      .catch((error) => {
+        console.error('Error creating user:', error);
+        alert('Error creating user: ' + error.message);
+      });
+  }
+  
+  // Load actions log
+  function loadActionsLog() {
+    const actionsLogTable = document.getElementById('actionsLogTable');
+    actionsLogTable.innerHTML = '<tr><td colspan="4" class="text-center">Loading...</td></tr>';
+    
+    db.collection('actionsLog')
+      .orderBy('timestamp', 'desc')
+      .limit(100) // Limit to last 100 actions
+      .get()
+      .then((querySnapshot) => {
+        actionsLogTable.innerHTML = '';
+        
+        if (querySnapshot.empty) {
+          actionsLogTable.innerHTML = '<tr><td colspan="4" class="text-center">No actions found</td></tr>';
+          return;
+        }
+        
+        querySnapshot.forEach((doc) => {
+          const action = doc.data();
+          const row = document.createElement('tr');
+          
+          const timestamp = action.timestamp && action.timestamp.seconds 
+            ? new Date(action.timestamp.seconds * 1000).toLocaleString()
+            : 'N/A';
+          
+          row.innerHTML = `
+            <td>${timestamp}</td>
+            <td>${action.user || 'N/A'}</td>
+            <td>${action.action || 'N/A'}</td>
+            <td>${action.details || 'N/A'}</td>
+          `;
+          
+          actionsLogTable.appendChild(row);
+        });
+      })
+      .catch((error) => {
+        console.error('Error loading actions log:', error);
+        actionsLogTable.innerHTML = '<tr><td colspan="4" class="text-center text-danger">Error loading actions log</td></tr>';
+      });
+  }
+  
+  // Log action function (to be called from other functions)
+  function logAction(action, details) {
+    const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
+    
+    const logData = {
+      user: currentUser.username || 'Unknown',
+      action: action,
+      details: details,
+      timestamp: firebase.firestore.Timestamp.now()
+    };
+    
+    db.collection('actionsLog').add(logData)
+      .catch((error) => {
+        console.error('Error logging action:', error);
+      });
   }
   </script>
 </body>
