@@ -205,14 +205,9 @@
       const visaData = localStorage.getItem("selectedVisa");
       const visaInfoElement = document.querySelector("#visaInfoCard .card-body");
       
-      console.log("Raw visa data from localStorage:", visaData);
-      
       if (visaData) {
         try {
           const visa = JSON.parse(visaData);
-          console.log("Parsed visa object:", visa);
-          console.log("Visa image URL:", visa.visaImageUrl);
-          console.log("Sponsor civil ID image URL:", visa.sponsorCivilIdImageUrl);
           
           // Prepare date values
           const startDate = visa.visaStartDate ? new Date(visa.visaStartDate.seconds * 1000).toLocaleDateString() : "Not available";
@@ -243,7 +238,7 @@
                      alt="${altText}" 
                      class="img-fluid visa-image" 
                      onerror="handleImageError(this, '${imageUrl}', '${altText}')"
-                     onload="console.log('Image loaded successfully:', '${imageUrl}')" />
+                     />
                 <div class="image-loading" style="display: none; text-align: center; padding: 1rem;">
                   <i class="fas fa-spinner fa-spin fa-2x"></i>
                   <p>Loading image...</p>
@@ -254,7 +249,6 @@
           
           // Handle image loading errors
           window.handleImageError = function(imgElement, imageUrl, altText) {
-            console.error('Failed to load image:', imageUrl);
             
             // Show error message with retry option
             imgElement.parentElement.innerHTML = `
@@ -275,7 +269,6 @@
           
           // Retry loading an image
           window.retryImageLoad = function(imageUrl, altText, containerElement) {
-            console.log('Retrying image load:', imageUrl);
             
             // Show loading state
             containerElement.innerHTML = `
@@ -291,12 +284,10 @@
             img.alt = altText;
             
             img.onload = function() {
-              console.log('Image loaded successfully on retry:', imageUrl);
               containerElement.innerHTML = `<img src="${imageUrl}" alt="${altText}" class="img-fluid visa-image" />`;
             };
             
             img.onerror = function() {
-              console.error('Image still failed to load on retry:', imageUrl);
               handleImageError(img, imageUrl, altText);
             };
             
@@ -317,28 +308,7 @@
             }
           };
           
-          // Test image access
-          window.testImageAccess = function(imageUrl, imageType) {
-            if (!imageUrl || imageUrl.trim() === '') {
-              alert(`${imageType}: No URL available`);
-              return;
-            }
-            
-            console.log(`Testing ${imageType} access:`, imageUrl);
-            
-            // Create a test image to check if it loads
-            const testImg = new Image();
-            testImg.onload = function() {
-              alert(`${imageType}: ✅ Image loads successfully!\n\nURL: ${imageUrl}`);
-            };
-            testImg.onerror = function() {
-              alert(`${imageType}: ❌ Image failed to load!\n\nURL: ${imageUrl}\n\nThis indicates a Firebase Storage permissions issue. Please check your Firebase Storage security rules.`);
-            };
-            
-            // Add timestamp to prevent caching
-            const testUrl = imageUrl + (imageUrl.includes('?') ? '&' : '?') + '_t=' + Date.now();
-            testImg.src = testUrl;
-          };
+
           
           // Create a comprehensive layout with all details
           const detailsHTML = `
@@ -408,24 +378,7 @@
               </div>
             </div>
             
-            <!-- Debug Information (remove in production) -->
-            <div class="debug-info">
-              <strong>Debug Info:</strong><br>
-              Visa Image URL: ${visa.visaImageUrl || 'null'}<br>
-              Sponsor Civil ID Image URL: ${visa.sponsorCivilIdImageUrl || 'null'}<br>
-              Status: ${visa.status || 'null'}<br>
-              Created At: ${visa.createdAt ? new Date(visa.createdAt.seconds * 1000).toLocaleString() : 'null'}<br>
-              <br>
-              <strong>Image Access Test:</strong><br>
-              <button class="btn btn-sm btn-outline-info" onclick="testImageAccess('${visa.visaImageUrl || ''}', 'Visa Image')">
-                <i class="fas fa-test-tube mr-1"></i>Test Visa Image Access
-              </button>
-              ${visa.sponsorCivilIdImageUrl ? `
-                <button class="btn btn-sm btn-outline-info ml-2" onclick="testImageAccess('${visa.sponsorCivilIdImageUrl}', 'Sponsor Civil ID Image')">
-                  <i class="fas fa-test-tube mr-1"></i>Test Sponsor Image Access
-                </button>
-              ` : ''}
-            </div>
+
           `;
           visaInfoElement.innerHTML = detailsHTML;
         } catch (error) {
