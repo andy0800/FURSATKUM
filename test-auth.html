@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Authentication Test</title>
+  <!-- Bootstrap 4 CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
+  <!-- Custom Stylesheet -->
+  <link rel="stylesheet" href="styles.css?v=5" />
+  <!-- Authentication Check Script -->
+  <script src="auth-check.js"></script>
+</head>
+<body>
+  <div class="container mt-5">
+    <div class="row justify-content-center">
+      <div class="col-md-8">
+        <div class="card">
+          <div class="card-header">
+            <h3>Authentication Test Page</h3>
+          </div>
+          <div class="card-body">
+            <p>If you can see this page, you are successfully authenticated!</p>
+            <p>Current user: <span id="currentUser">Loading...</span></p>
+            <p>Session started: <span id="sessionTime">Loading...</span></p>
+            <button class="btn btn-primary" onclick="logout()">Logout</button>
+            <a href="index.html" class="btn btn-secondary">Go to Dashboard</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Display current user info
+    document.addEventListener('DOMContentLoaded', function() {
+      const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
+      const lastActivity = localStorage.getItem('lastActivity');
+      
+      document.getElementById('currentUser').textContent = currentUser.username || 'Unknown';
+      
+      if (lastActivity) {
+        const sessionTime = new Date(parseInt(lastActivity));
+        document.getElementById('sessionTime').textContent = sessionTime.toLocaleString();
+      } else {
+        document.getElementById('sessionTime').textContent = 'Not available';
+      }
+    });
+  </script>
+</body>
+</html>

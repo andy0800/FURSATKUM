@@ -140,8 +140,68 @@
   <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
   
+  <!-- Firebase Config and Script -->
+  <script src="firebase-config.js"></script>
+  <!-- Authentication Check Script -->
+  <script src="auth-check.js"></script>
   <script>
+    // Authentication check function
+    function checkAuthentication() {
+      const currentUser = localStorage.getItem('currentUser');
+      const lastActivity = localStorage.getItem('lastActivity');
+      
+      if (!currentUser) {
+        redirectToLogin();
+        return false;
+      }
+      
+      // Check session timeout (30 minutes)
+      if (lastActivity) {
+        const lastActivityTime = new Date(parseInt(lastActivity));
+        const currentTime = new Date();
+        const timeDiff = (currentTime - lastActivityTime) / (1000 * 60);
+        
+        if (timeDiff > 30) {
+          logout();
+          return false;
+        }
+      }
+      
+      // Update last activity
+      localStorage.setItem('lastActivity', Date.now().toString());
+      return true;
+    }
+    
+    function redirectToLogin() {
+      localStorage.removeItem('currentUser');
+      localStorage.removeItem('lastActivity');
+      localStorage.removeItem('selectedVisa');
+      window.location.href = 'login.html';
+    }
+    
+    function logout() {
+      localStorage.clear();
+      alert('Session expired. Please login again.');
+      window.location.href = 'login.html';
+    }
+    
+    // Update activity on user interaction
+    function updateLastActivity() {
+      localStorage.setItem('lastActivity', Date.now().toString());
+    }
+    
+    // Set up activity listeners
+    const events = ['mousedown', 'mousemove', 'keypress', 'scroll', 'touchstart', 'click'];
+    events.forEach(event => {
+      document.addEventListener(event, updateLastActivity, true);
+    });
+    
     document.addEventListener("DOMContentLoaded", function () {
+      // Check authentication first
+      if (!checkAuthentication()) {
+        return;
+      }
+      
       const visaData = localStorage.getItem("selectedVisa");
       const visaInfoElement = document.querySelector("#visaInfoCard .card-body");
       

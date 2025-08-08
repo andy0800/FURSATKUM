@@ -121,8 +121,21 @@
   <script>
     // Check if user is already logged in
     const currentUser = localStorage.getItem('currentUser');
-    if (currentUser) {
-      window.location.href = 'index.html';
+    const lastActivity = localStorage.getItem('lastActivity');
+    
+    if (currentUser && lastActivity) {
+      // Check if session is still valid (within 30 minutes)
+      const lastActivityTime = new Date(parseInt(lastActivity));
+      const currentTime = new Date();
+      const timeDiff = (currentTime - lastActivityTime) / (1000 * 60);
+      
+      if (timeDiff <= 30) {
+        // Session is still valid, redirect to dashboard
+        window.location.href = 'index.html';
+      } else {
+        // Session expired, clear data and stay on login page
+        localStorage.clear();
+      }
     }
 
     // Handle login form submission
@@ -143,8 +156,10 @@
             const userDoc = querySnapshot.docs[0];
             const userData = userDoc.data();
             if (userData.password === password) {
-              // Store user data in localStorage
+              // Store user data and session info in localStorage
               localStorage.setItem('currentUser', JSON.stringify(userData));
+              localStorage.setItem('lastActivity', Date.now().toString());
+              
               showMessage('Login successful! Redirecting...', 'success');
               setTimeout(() => {
                 window.location.href = 'index.html';

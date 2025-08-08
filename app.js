@@ -1,34 +1,139 @@
 document.addEventListener("DOMContentLoaded", function () {
-  // Check authentication first
-  checkAuthentication();
+  // Initialize authentication system first
+  initializeAuth();
   
-  // Populate secretaries (dashboard view) and the secretary dropdown.
-  loadSecretaries();
-  loadSecretaryOptions();
-  // Also load the filtered visas (all visas from all secretaries) into "Expiring Soon"
-  loadFilteredVisas();
-  // Load cancelled and arrived visas
-  loadCancelledVisas();
-  loadArrivedVisas();
+  // Only proceed if authentication is successful
+  if (checkAuthentication()) {
+    // Populate secretaries (dashboard view) and the secretary dropdown.
+    loadSecretaries();
+    loadSecretaryOptions();
+    // Also load the filtered visas (all visas from all secretaries) into "Expiring Soon"
+    loadFilteredVisas();
+    // Load cancelled and arrived visas
+    loadCancelledVisas();
+    loadArrivedVisas();
+  }
 });
 
-// Authentication check
+// Enhanced Authentication System
+let sessionTimeout = null;
+const SESSION_TIMEOUT_MINUTES = 30; // 30 minutes session timeout
+
+// Check authentication on every page load
 function checkAuthentication() {
   const currentUser = localStorage.getItem('currentUser');
+  const lastActivity = localStorage.getItem('lastActivity');
+  
   if (!currentUser) {
-    window.location.href = 'login.html';
-    return;
+    redirectToLogin();
+    return false;
   }
-  // Display current user
-  displayCurrentUser();
+  
+  // Check session timeout
+  if (lastActivity) {
+    const lastActivityTime = new Date(parseInt(lastActivity));
+    const currentTime = new Date();
+    const timeDiff = (currentTime - lastActivityTime) / (1000 * 60); // Convert to minutes
+    
+    if (timeDiff > SESSION_TIMEOUT_MINUTES) {
+      // Session expired
+      logout();
+      return false;
+    }
+  }
+  
+  // Update last activity
+  localStorage.setItem('lastActivity', Date.now().toString());
+  
+  // Reset session timeout
+  resetSessionTimeout();
+  
+  return true;
 }
 
+// Redirect to login page
+function redirectToLogin() {
+  // Clear any existing user data
+  localStorage.removeItem('currentUser');
+  localStorage.removeItem('lastActivity');
+  localStorage.removeItem('selectedVisa');
+  
+  // Redirect to login page
+  if (window.location.pathname !== '/login.html' && !window.location.pathname.includes('login.html')) {
+    window.location.href = 'login.html';
+  }
+}
+
+// Enhanced logout function
+function logout() {
+  // Clear all localStorage data
+  localStorage.clear();
+  
+  // Clear session timeout
+  if (sessionTimeout) {
+    clearTimeout(sessionTimeout);
+  }
+  
+  // Show logout message
+  alert('Session expired. Please login again.');
+  
+  // Redirect to login
+  window.location.href = 'login.html';
+}
+
+// Reset session timeout
+function resetSessionTimeout() {
+  if (sessionTimeout) {
+    clearTimeout(sessionTimeout);
+  }
+  
+  sessionTimeout = setTimeout(() => {
+    logout();
+  }, SESSION_TIMEOUT_MINUTES * 60 * 1000);
+}
+
+// Update last activity on user interaction
+function updateLastActivity() {
+  localStorage.setItem('lastActivity', Date.now().toString());
+  resetSessionTimeout();
+}
+
+// Display current user information
 function displayCurrentUser() {
   const currentUserElement = document.getElementById('currentUser');
   if (currentUserElement) {
-    const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
-    currentUserElement.textContent = `Welcome, ${currentUser.username || 'User'}`;
+    try {
+      const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
+      currentUserElement.textContent = `Welcome, ${currentUser.username || 'User'}`;
+    } catch (error) {
+      console.error('Error parsing current user:', error);
+      currentUserElement.textContent = 'Welcome, User';
+    }
   }
+}
+
+// Initialize authentication system
+function initializeAuth() {
+  // Check authentication immediately
+  if (!checkAuthentication()) {
+    return;
+  }
+  
+  // Set up activity listeners to update last activity
+  const events = ['mousedown', 'mousemove', 'keypress', 'scroll', 'touchstart', 'click'];
+  events.forEach(event => {
+    document.addEventListener(event, updateLastActivity, true);
+  });
+  
+  // Display current user
+  displayCurrentUser();
+  
+  // Set up periodic authentication check
+  setInterval(() => {
+    if (!checkAuthentication()) {
+      return;
+    }
+  }, 60000); // Check every minute
 }
 
 // Select DOM elements.
@@ -928,3 +1033,8 @@ function logAction(action, details) {
       console.error('Error logging action:', error);
     });
 }
+
+// Global logout function (accessible from HTML)
+window.logout = function() {
+  logout();
+};
